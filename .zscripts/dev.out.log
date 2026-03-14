@@ -1,0 +1,309 @@
+==========================================
+[2026-03-14 16:21:47] Starting: bun install
+==========================================
+[BUN] Installing dependencies...
+[0.31ms] ".env"
+bun install v1.3.10 (30e609e0)
+
++ @tailwindcss/postcss@4.1.18
++ @types/react@19.2.8
++ @types/react-dom@19.2.3
++ bun-types@1.3.6
++ eslint@9.39.2
++ eslint-config-next@16.1.3
++ tailwindcss@4.1.18
++ tw-animate-css@1.4.0
++ typescript@5.9.3
++ @dnd-kit/core@6.3.1
++ @dnd-kit/sortable@10.0.0
++ @dnd-kit/utilities@3.2.2
++ @hookform/resolvers@5.2.2
++ @mdxeditor/editor@3.52.3
++ @prisma/client@6.19.2
++ @radix-ui/react-accordion@1.2.12
++ @radix-ui/react-alert-dialog@1.1.15
++ @radix-ui/react-aspect-ratio@1.1.8
++ @radix-ui/react-avatar@1.1.11
++ @radix-ui/react-checkbox@1.3.3
++ @radix-ui/react-collapsible@1.1.12
++ @radix-ui/react-context-menu@2.2.16
++ @radix-ui/react-dialog@1.1.15
++ @radix-ui/react-dropdown-menu@2.1.16
++ @radix-ui/react-hover-card@1.1.15
++ @radix-ui/react-label@2.1.8
++ @radix-ui/react-menubar@1.1.16
++ @radix-ui/react-navigation-menu@1.2.14
++ @radix-ui/react-popover@1.1.15
++ @radix-ui/react-progress@1.1.8
++ @radix-ui/react-radio-group@1.3.8
++ @radix-ui/react-scroll-area@1.2.10
++ @radix-ui/react-select@2.2.6
++ @radix-ui/react-separator@1.1.8
++ @radix-ui/react-slider@1.3.6
++ @radix-ui/react-slot@1.2.4
++ @radix-ui/react-switch@1.2.6
++ @radix-ui/react-tabs@1.1.13
++ @radix-ui/react-toast@1.2.15
++ @radix-ui/react-toggle@1.1.10
++ @radix-ui/react-toggle-group@1.1.11
++ @radix-ui/react-tooltip@1.2.8
++ @reactuses/core@6.1.9
++ @tanstack/react-query@5.90.19
++ @tanstack/react-table@8.21.3
++ class-variance-authority@0.7.1
++ clsx@2.1.1
++ cmdk@1.1.1
++ date-fns@4.1.0
++ embla-carousel-react@8.6.0
++ framer-motion@12.26.2
++ input-otp@1.4.2
++ lucide-react@0.525.0
++ next@16.1.3
++ next-auth@4.24.13
++ next-intl@4.7.0
++ next-themes@0.4.6
++ prisma@6.19.2
++ react@19.2.3
++ react-day-picker@9.13.0
++ react-dom@19.2.3
++ react-hook-form@7.71.1
++ react-markdown@10.1.0
++ react-resizable-panels@3.0.6
++ react-syntax-highlighter@15.6.6
++ recharts@2.15.4
++ sharp@0.34.5
++ sonner@2.0.7
++ tailwind-merge@3.4.0
++ tailwindcss-animate@1.0.7
++ uuid@11.1.0
++ vaul@1.1.2
++ z-ai-web-dev-sdk@0.0.17
++ zod@4.3.5
++ zustand@5.0.10
+
+827 packages installed [11.71s]
+==========================================
+[2026-03-14 16:21:59] Completed: bun install
+[LOG] Step: bun install | Duration: 12s
+==========================================
+
+==========================================
+[2026-03-14 16:21:59] Starting: bun run db:push
+==========================================
+[BUN] Setting up database...
+$ prisma db push
+Environment variables loaded from .env
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": SQLite database "custom.db" at "file:/home/z/my-project/db/custom.db"
+
+SQLite database custom.db created at file:/home/z/my-project/db/custom.db
+
+🚀  Your database is now in sync with your Prisma schema. Done in 16ms
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./node_modules/@prisma/client in 70ms
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.2 -> 7.5.0                       │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+==========================================
+[2026-03-14 16:22:00] Completed: bun run db:push
+[LOG] Step: bun run db:push | Duration: 1s
+==========================================
+
+==========================================
+[2026-03-14 16:22:00] Starting: Starting Next.js dev server
+==========================================
+[BUN] Starting development server...
+==========================================
+[2026-03-14 16:22:00] Completed: Starting Next.js dev server
+[LOG] Step: Starting Next.js dev server | Duration: 0s
+==========================================
+
+==========================================
+$ next dev -p 3000 2>&1 | tee dev.log
+[2026-03-14 16:22:00] Starting: Waiting for Next.js dev server
+==========================================
+Waiting for Next.js dev server to be ready on localhost:3000...
+Attempt 1/60: Next.js dev server not ready yet, waiting...
+▲ Next.js 16.1.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://21.0.11.170:3000
+- Environments: .env
+
+✓ Starting...
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+
+  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+  The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+  	- include was updated to add '.next/dev/types/**/*.ts'
+
+  The following mandatory changes were made to your tsconfig.json:
+
+  	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+
+✓ Ready in 919ms
+Next.js dev server is ready!
+ GET / 200 in 2.9s (compile: 2.7s, render: 170ms)
+==========================================
+[2026-03-14 16:22:05] Completed: Waiting for Next.js dev server
+[LOG] Step: Waiting for Next.js dev server | Duration: 5s
+==========================================
+
+==========================================
+[2026-03-14 16:22:05] Starting: Health check
+==========================================
+[BUN] Performing health check...
+ GET / 200 in 31ms (compile: 7ms, render: 24ms)
+[BUN] Health check passed
+==========================================
+[2026-03-14 16:22:05] Completed: Health check
+[LOG] Step: Health check | Duration: 0s
+==========================================
+
+==========================================
+[2026-03-14 16:22:05] Starting: Starting mini-services
+==========================================
+Found mini-services directory, scanning for sub-services...
+Mini-services startup completed. Started 0 service(s).
+==========================================
+[2026-03-14 16:22:05] Completed: Starting mini-services
+[LOG] Step: Starting mini-services | Duration: 0s
+==========================================
+
+Next.js dev server is running in background (PID: 337).
+Use 'kill 337' to stop it.
+⨯ ./src/app/globals.css:4099:8
+Parsing CSS source code failed
+[0m [90m 4097 |[39m   initial[33m-[39mvalue[33m:[39m [35m0[39m[33m;[39m
+ [90m 4098 |[39m }
+[31m[1m>[22m[39m[90m 4099 |[39m [33m@[39m[36mimport[39m url([32m'https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap'[39m)[33m;[39m
+ [90m      |[39m        [31m[1m^[22m[39m
+ [90m 4100 |[39m [33m:[39mroot {
+ [90m 4101 |[39m   [33m--[39mfont[33m-[39mheading[33m:[39m [32m'Playfair Display'[39m[33m,[39m serif[33m;[39m
+ [90m 4102 |[39m   [33m--[39mfont[33m-[39mbody[33m:[39m [32m'Manrope'[39m[33m,[39m sans[33m-[39mserif[33m;[39m[0m
+
+@import rules must precede all rules aside from @charset and @layer statements
+
+Import trace:
+  Client Component Browser:
+    ./src/app/globals.css [Client Component Browser]
+    ./src/app/layout.tsx [Server Component]
+
+
+ GET / 500 in 1232ms (compile: 1073ms, render: 159ms)
+⚠ Cross origin request detected from preview-chat-0c52db2b-c62f-4dc8-84d2-37e5cbaf274e.space.z.ai to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+✓ Compiled in 255ms
+ GET / 200 in 188ms (compile: 53ms, render: 135ms)
+ GET / 200 in 43ms (compile: 3ms, render: 40ms)
+ GET / 200 in 47ms (compile: 4ms, render: 43ms)
+ GET / 200 in 42ms (compile: 3ms, render: 39ms)
+ GET / 200 in 45ms (compile: 3ms, render: 43ms)
+ GET / 200 in 206ms (compile: 74ms, render: 132ms)
+ GET / 200 in 48ms (compile: 5ms, render: 43ms)
+ GET / 200 in 44ms (compile: 4ms, render: 40ms)
+ GET / 200 in 194ms (compile: 73ms, render: 121ms)
+ GET / 200 in 59ms (compile: 4ms, render: 55ms)
+ GET / 200 in 40ms (compile: 2ms, render: 37ms)
+✓ Compiled in 127ms
+✓ Compiled in 170ms
+✓ Compiled in 173ms
+✓ Compiled in 174ms
+✓ Compiled in 128ms
+✓ Compiled in 160ms
+ GET / 200 in 188ms (compile: 61ms, render: 127ms)
+✓ Compiled in 150ms
+✓ Compiled in 128ms
+ GET / 200 in 233ms (compile: 86ms, render: 147ms)
+ GET / 200 in 50ms (compile: 4ms, render: 45ms)
+ GET / 200 in 40ms (compile: 2ms, render: 38ms)
+ GET / 200 in 41ms (compile: 3ms, render: 38ms)
+ GET / 200 in 35ms (compile: 2ms, render: 33ms)
+ GET / 200 in 41ms (compile: 2ms, render: 38ms)
+ GET / 200 in 36ms (compile: 3ms, render: 33ms)
+ GET / 200 in 273ms (compile: 124ms, render: 148ms)
+ GET / 200 in 42ms (compile: 3ms, render: 39ms)
+ GET / 200 in 51ms (compile: 4ms, render: 47ms)
+ GET / 200 in 41ms (compile: 2ms, render: 38ms)
+✓ Compiled in 162ms
+✓ Compiled in 150ms
+✓ Compiled in 136ms
+✓ Compiled in 114ms
+ GET / 200 in 177ms (compile: 51ms, render: 126ms)
+ GET / 200 in 48ms (compile: 4ms, render: 44ms)
+ GET / 200 in 40ms (compile: 2ms, render: 38ms)
+✓ Compiled in 247ms
+ GET / 200 in 217ms (compile: 47ms, render: 170ms)
+ GET / 200 in 43ms (compile: 2ms, render: 41ms)
+✓ Compiled in 187ms
+✓ Compiled in 235ms
+✓ Compiled in 134ms
+✓ Compiled in 128ms
+✓ Compiled in 139ms
+ GET / 200 in 228ms (compile: 52ms, render: 176ms)
+ GET / 200 in 50ms (compile: 4ms, render: 46ms)
+✓ Compiled in 227ms
+✓ Compiled in 149ms
+✓ Compiled in 133ms
+✓ Compiled in 136ms
+ GET / 200 in 187ms (compile: 52ms, render: 135ms)
+ GET / 200 in 53ms (compile: 5ms, render: 48ms)
+✓ Compiled in 252ms
+✓ Compiled in 127ms
+✓ Compiled in 139ms
+✓ Compiled in 169ms
+✓ Compiled in 161ms
+✓ Compiled in 157ms
+ GET / 200 in 212ms (compile: 63ms, render: 149ms)
+ GET / 200 in 45ms (compile: 3ms, render: 42ms)
+✓ Compiled in 169ms
+✓ Compiled in 180ms
+✓ Compiled in 134ms
+ GET / 200 in 181ms (compile: 47ms, render: 134ms)
+ GET / 200 in 44ms (compile: 3ms, render: 41ms)
+ GET / 200 in 66ms (compile: 4ms, render: 62ms)
+✓ Compiled in 140ms
+✓ Compiled in 190ms
+✓ Compiled in 184ms
+ GET / 200 in 222ms (compile: 61ms, render: 161ms)
+ GET / 200 in 47ms (compile: 4ms, render: 42ms)
+ GET / 200 in 38ms (compile: 2ms, render: 36ms)
+ GET / 200 in 44ms (compile: 3ms, render: 41ms)
+✓ Compiled in 160ms
+✓ Compiled in 128ms
+✓ Compiled in 171ms
+✓ Compiled in 122ms
+✓ Compiled in 130ms
+✓ Compiled in 155ms
+✓ Compiled in 138ms
+✓ Compiled in 202ms
+✓ Compiled in 122ms
+✓ Compiled in 138ms
+✓ Compiled in 128ms
+✓ Compiled in 167ms
+✓ Compiled in 172ms
+ GET / 200 in 210ms (compile: 59ms, render: 151ms)
+ GET / 200 in 47ms (compile: 3ms, render: 44ms)
+ GET / 200 in 48ms (compile: 4ms, render: 44ms)
+✓ Compiled in 212ms
+✓ Compiled in 167ms
+✓ Compiled in 124ms
+✓ Compiled in 196ms
+✓ Compiled in 219ms
+ GET / 200 in 236ms (compile: 58ms, render: 178ms)
+ GET / 200 in 32ms (compile: 2ms, render: 30ms)
+ GET / 200 in 49ms (compile: 6ms, render: 43ms)
