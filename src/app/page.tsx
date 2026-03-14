@@ -188,516 +188,12 @@ const mockMovies: Movie[] = [
       ],
       crew: [{ id: 20, name: 'Кристофер Нолан', job: 'Director', department: 'Directing' }]
     }
-  },
-  {
-    id: 3,
-    title: 'Бедные-несчастные',
-    original_title: 'Poor Things',
-    overview: 'Белла Бакстер — молодая женщина, воскрешённая гениальным и неортодоксальным учёным доктором Годвином Бакстером. Под его защитой она жаждет познания и решает сбежать с деловым юристом Дунканом Уэддербёрном.',
-    poster_path: '/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg',
-    backdrop_path: '/bQS43HSLZzMjZkcHJz4fGc7fNdz.jpg',
-    release_date: '2023-12-08',
-    vote_average: 8.0,
-    vote_count: 3200,
-    genre_ids: [35, 878, 10749],
-    popularity: 88,
-    runtime: 141,
-    tagline: 'Рождена заново',
-    genres: [{ id: 35, name: 'Комедия' }, { id: 878, name: 'Фантастика' }, { id: 10749, name: 'Мелодрама' }],
-    videos: { results: [{ id: '3', key: 'RlbR5N6veqw', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 11, name: 'Эмма Стоун', character: 'Белла Бакстер', profile_path: '/2hwXbPW2ffnXUe1Um0WXHG0cTwb.jpg' },
-        { id: 12, name: 'Марк Руффало', character: 'Дункан Уэддербёрн', profile_path: '/zLlTSMGqXgZtP3krt9PeRtd1mFH.jpg' },
-        { id: 13, name: 'Уиллем Дефо', character: 'Годвин Бакстер', profile_path: '/uiAGQYjLhE8qMRJAkhqdY1sFvqr.jpg' },
-        { id: 14, name: 'Рами Юсеф', character: 'Макс МакКэндлз', profile_path: '/aY7Bwp7PLMKuYaxTSz1XvYEbXrN.jpg' },
-        { id: 15, name: 'Джеррод Кармайкл', character: 'Гарри Астор', profile_path: '/ffkEq2G8dVyVhmDPLqr2NaL8SnV.jpg' }
-      ],
-      crew: [{ id: 30, name: 'Йоргос Лантимос', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 4,
-    title: 'Убийцы цветочной луны',
-    original_title: 'Killers of the Flower Moon',
-    overview: 'В 1920-х годах в Оклахоме члены индейского племени осейдж были убиты при загадочных обстоятельствах, что спровоцировало масштабное расследование ФБР. История основана на реальных событиях.',
-    poster_path: '/dB6Krk806zeqd0YNp2ngQ9zXteH.jpg',
-    backdrop_path: '/AnMHDvKd6c8nxT8xNvYUzBwONNR.jpg',
-    release_date: '2023-10-18',
-    vote_average: 7.8,
-    vote_count: 2800,
-    genre_ids: [18, 80, 36],
-    popularity: 82,
-    runtime: 206,
-    tagline: 'Преступление века',
-    genres: [{ id: 18, name: 'Драма' }, { id: 80, name: 'Криминал' }, { id: 36, name: 'История' }],
-    videos: { results: [{ id: '4', key: 'EP34Yoxs3FQ', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 16, name: 'Леонардо ДиКаприо', character: 'Эрнест Бёркхарт', profile_path: '/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg' },
-        { id: 17, name: 'Роберт Де Ниро', character: 'Уильям Хейл', profile_path: '/cT8thc3nVwTV2Dt1uBHZJVtMbN.jpg' },
-        { id: 18, name: 'Лили Гладстоун', character: 'Молли Бёркхарт', profile_path: '/xW1O3KnU7VZQ8qqDkgZJKCR1yXg.jpg' },
-        { id: 19, name: 'Джесси Племонс', character: 'Том Уайт', profile_path: '/pZFXyJamSVtFUK6DElYjEMI3jKj.jpg' },
-        { id: 20, name: 'Брендан Фрейзер', character: 'У. С. Хэмилтон', profile_path: '/8R1fvKraMHj27kLqVj7hTxeJdao.jpg' }
-      ],
-      crew: [{ id: 40, name: 'Мартин Скорсезе', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 5,
-    title: 'Мастер и Маргарита',
-    original_title: 'Мастер и Маргарита',
-    overview: 'Современная экранизация культового романа Михаила Булгакова. Дьявол и его свита появляются в Москве 1930-х годов, переплетая судьбы Мастера, Маргариты и множества других персонажей в сюрреалистической истории о любви, творчестве и искуплении.',
-    poster_path: '/dY6I4I5QejRcHeGvZNE9VopFGfh.jpg',
-    backdrop_path: '/9eK8BkmPzDNW5xRnGwKDCZzY6Fp.jpg',
-    release_date: '2024-01-25',
-    vote_average: 7.5,
-    vote_count: 1800,
-    genre_ids: [14, 18, 10749],
-    popularity: 78,
-    runtime: 157,
-    tagline: 'Рукописи не горят',
-    genres: [{ id: 14, name: 'Фэнтези' }, { id: 18, name: 'Драма' }, { id: 10749, name: 'Мелодрама' }],
-    videos: { results: [{ id: '5', key: 'yHfMVEVgNPQ', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 21, name: 'Волков', character: 'Воланд', profile_path: null },
-        { id: 22, name: 'Ян Цапник', character: 'Коровьев', profile_path: null },
-        { id: 23, name: 'Евгений Цыганов', character: 'Мастер', profile_path: null },
-        { id: 24, name: 'Юлия Снигирь', character: 'Маргарита', profile_path: null },
-        { id: 25, name: 'Алексей Гуськов', character: 'Понтий Пилат', profile_path: null }
-      ],
-      crew: [{ id: 50, name: 'Михаил Локшин', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 6,
-    title: 'Человек-паук: Паутина вселенных',
-    original_title: 'Spider-Man: Across the Spider-Verse',
-    overview: 'Майлз Моралес возвращается в следующем приключении эпической серии «Паутина вселенных». Он отправляется в путешествие по мультивселенной, где встречает команду Человеков-пауков, защищающих само её существование.',
-    poster_path: '/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg',
-    backdrop_path: '/4HodYYKEIsGOdinkGi2Ucz6X9i0.jpg',
-    release_date: '2023-05-31',
-    vote_average: 8.7,
-    vote_count: 6500,
-    genre_ids: [16, 28, 12],
-    popularity: 92,
-    runtime: 140,
-    tagline: 'Новый мир. Новая паутина',
-    genres: [{ id: 16, name: 'Мультфильм' }, { id: 28, name: 'Боевик' }, { id: 12, name: 'Приключения' }],
-    videos: { results: [{ id: '6', key: 'shW9i6k8cB0', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 26, name: 'Шамеик Мур', character: 'Майлз Моралес (голос)', profile_path: '/laNBfHkYvcvqFkdvVwjevJ0mVfB.jpg' },
-        { id: 27, name: 'Хейли Стайнфелд', character: 'Гвен Стейси (голос)', profile_path: '/u5kQV6FPFhBcfBHR7D8CVKJXCXh.jpg' },
-        { id: 28, name: 'Оскар Айзек', character: 'Мигель О\'Хара (голос)', profile_path: '/xnDO5T5bdAvqLDXqGXTRyAJH1Va.jpg' },
-        { id: 29, name: 'Джейк Джонсон', character: 'Питер Б. Паркер (голос)', profile_path: '/5LmobFXQL0LdFvS4XgJQhENXB4d.jpg' },
-        { id: 30, name: 'Джейми Фокс', character: 'Электро (голос)', profile_path: '/hT6gxAn7Hw4GvX3izJlXgEADhJ.jpg' }
-      ],
-      crew: [{ id: 60, name: 'Хоаким Дос Сантос', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 7,
-    title: 'Барби',
-    original_title: 'Barbie',
-    overview: 'Барби и Кен наслаждаются идеальной жизнью в ярком и прекрасном мире Барбиленда. Однако, когда они получают шанс отправиться в реальный мир, они вскоре открывают для себя радости и опасности жизни среди людей.',
-    poster_path: '/iuFNms8NX5qfoiCieDtoDqLLm4v.jpg',
-    backdrop_path: '/nHf61UzkfFno5dHMNX5qMpfO3pS.jpg',
-    release_date: '2023-07-19',
-    vote_average: 7.2,
-    vote_count: 8200,
-    genre_ids: [35, 14, 10749],
-    popularity: 98,
-    runtime: 114,
-    tagline: 'Она — всё. Он — просто Кен',
-    genres: [{ id: 35, name: 'Комедия' }, { id: 14, name: 'Фэнтези' }, { id: 10749, name: 'Мелодрама' }],
-    videos: { results: [{ id: '7', key: 'pBk4NYhWNMM', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 31, name: 'Марго Робби', character: 'Барби', profile_path: '/eTCB1FnVKwY1Y9o2xeC6s4pcJdN.jpg' },
-        { id: 32, name: 'Райан Гослинг', character: 'Кен', profile_path: '/lyUyVARQKhGxaxy0FbPJCQRpiaW.jpg' },
-        { id: 33, name: 'Америка Феррера', character: 'Глория', profile_path: '/noPLaHtVS8RHtY9FvCGUzbZS5mv.jpg' },
-        { id: 34, name: 'Кейт МакКиннон', character: 'Странная Барби', profile_path: '/5ZcBWxkq9vAr6LOBqL6FntDfdeW.jpg' },
-        { id: 35, name: 'Уилл Феррелл', character: 'CEO Mattel', profile_path: '/oXwJRoW1pI1rLqKI1WMD1E2P1y8.jpg' }
-      ],
-      crew: [{ id: 70, name: 'Грета Гервиг', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 8,
-    title: 'Наполеон',
-    original_title: 'Napoleon',
-    overview: 'Эпическая сага о rise и падении французского императора Наполеона Бонапарта. Фильм показывает его военные кампании, сложные отношения с женой Жозефиной и путь к абсолютной власти.',
-    poster_path: '/jE5o7y9K6pZtWNNMXw3EdpHaakR.jpg',
-    backdrop_path: '/wLHeprSWB0HUW8hFC7mY6VPfdhV.jpg',
-    release_date: '2023-11-22',
-    vote_average: 6.6,
-    vote_count: 2100,
-    genre_ids: [18, 36, 10752],
-    popularity: 75,
-    runtime: 158,
-    tagline: 'Император. Легенда. Человек',
-    genres: [{ id: 18, name: 'Драма' }, { id: 36, name: 'История' }, { id: 10752, name: 'Военный' }],
-    videos: { results: [{ id: '8', key: 'OAZWXUkrjPc', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 36, name: 'Хоакин Феникс', character: 'Наполеон Бонапарт', profile_path: '/w2phndz3CrYvSGg6pZrWheFVTDs.jpg' },
-        { id: 37, name: 'Ванесса Кирби', character: 'Жозефина', profile_path: '/rLt7N9QRIoPvFPWkTc2NvI3VWSw.jpg' },
-        { id: 38, name: 'Тахар Рахим', character: 'Поль Баррас', profile_path: '/pW3V4WgJvTs9dTmBKkegLrVXmLX.jpg' },
-        { id: 39, name: 'Бен Миллер', character: 'Талейран', profile_path: '/aMmyy7auk8dQeJvDSAQJ07uLHJ6.jpg' },
-        { id: 40, name: 'Рори Киннир', character: 'Горацио Нельсон', profile_path: '/hwJ9TX0qxzRkSJX3OouVf0APpFB.jpg' }
-      ],
-      crew: [{ id: 80, name: 'Ридли Скотт', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 9,
-    title: 'Звёздные войны: Пробуждение силы',
-    original_title: 'Star Wars: The Force Awakens',
-    overview: 'Три десятилетия после поражения Галактической Империи возникает новая угроза в виде Первого Ордена. Рей, мусорщица с планеты Джакку, оказывается в центре конфликта и узнаёт о своём предназначении.',
-    poster_path: '/wqnLdwOH2OOq0o5GelZ1VFw1oPD.jpg',
-    backdrop_path: '/sYQcdOyw8frk6rLJCwFjX1Dw6Lv.jpg',
-    release_date: '2015-12-15',
-    vote_average: 7.4,
-    vote_count: 15000,
-    genre_ids: [878, 12, 28],
-    popularity: 85,
-    runtime: 138,
-    tagline: 'Каждое поколение имеет свою легенду',
-    genres: [{ id: 878, name: 'Фантастика' }, { id: 12, name: 'Приключения' }, { id: 28, name: 'Боевик' }],
-    videos: { results: [{ id: '9', key: 'sGbxmsDFVnE', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 41, name: 'Дейзи Ридли', character: 'Рей', profile_path: '/dTBZ1VOVhNvQZXS4tCQV3vSFkks.jpg' },
-        { id: 42, name: 'Джон Бойега', character: 'Финн', profile_path: '/egNqPmWboOrLs9k0H9sYH4iKoqD.jpg' },
-        { id: 43, name: 'Оскар Айзек', character: 'По Дэмерон', profile_path: '/xnDO5T5bdAvqLDXqGXTRyAJH1Va.jpg' },
-        { id: 44, name: 'Харрисон Форд', character: 'Хан Соло', profile_path: '/7Cg2sUeLQvEHSFp7KJA3x5FndvA.jpg' },
-        { id: 45, name: 'Кэрри Фишер', character: 'Лея Органа', profile_path: '/9sP6NPh5WJz6rfrLFRMqQBpMEw4.jpg' }
-      ],
-      crew: [{ id: 90, name: 'Джей-Джей Абрамс', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 10,
-    title: 'Интерстеллар',
-    original_title: 'Interstellar',
-    overview: 'Когда засуха, пыльные бури и вымирание растений приводят человечество к продовольственному кризису, группа исследователей отправляется через червоточину в поисках нового дома для человечества.',
-    poster_path: '/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg',
-    backdrop_path: '/xJHokMbljvjADYdit5fK5VQsXEG.jpg',
-    release_date: '2014-11-05',
-    vote_average: 8.7,
-    vote_count: 32000,
-    genre_ids: [878, 12, 18],
-    popularity: 90,
-    runtime: 169,
-    tagline: 'Человечество родилось на Земле. Но оно не предназначено, чтобы погибнуть здесь',
-    genres: [{ id: 878, name: 'Фантастика' }, { id: 12, name: 'Приключения' }, { id: 18, name: 'Драма' }],
-    videos: { results: [{ id: '10', key: 'zSWdZVtXT7E', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 46, name: 'Мэттью Макконахи', character: 'Купер', profile_path: '/wJiGedOCZhwMx9DezY8uwbNxmAY.jpg' },
-        { id: 47, name: 'Энн Хэтэуэй', character: 'Брэнд', profile_path: '/vBclUgJYxGgbPvagddUjRXVvD5X.jpg' },
-        { id: 48, name: 'Джессика Честейн', character: 'Мёрф (взрослая)', profile_path: '/mKJO6YgulRg6YVeT5yaAD1n2Uuk.jpg' },
-        { id: 49, name: 'Майкл Кейн', character: 'Профессор Брэнд', profile_path: '/9IWg58hQmJWqPqk3YJz3mckXHll.jpg' },
-        { id: 50, name: 'Маккензи Фой', character: 'Мёрф (юная)', profile_path: '/uBB3NuknJBbqxJd7EKSNvPxYYJF.jpg' }
-      ],
-      crew: [{ id: 100, name: 'Кристофер Нолан', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 11,
-    title: 'Начало',
-    original_title: 'Inception',
-    overview: 'Кобб — талантливый вор, лучший в опасном искусстве извлечения: он крадёт ценные секреты из глубин подсознания во время сна. Его уникальные способности сделали его ценным игроком в мире корпоративного шпионажа.',
-    poster_path: '/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg',
-    backdrop_path: '/8ZTVqvKDQ8emSGUEMjsS4yHAwrp.jpg',
-    release_date: '2010-07-15',
-    vote_average: 8.8,
-    vote_count: 34000,
-    genre_ids: [878, 28, 12],
-    popularity: 88,
-    runtime: 148,
-    tagline: 'Твой разум — место преступления',
-    genres: [{ id: 878, name: 'Фантастика' }, { id: 28, name: 'Боевик' }, { id: 12, name: 'Приключения' }],
-    videos: { results: [{ id: '11', key: 'YoHD9XEInc0', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 51, name: 'Леонардо ДиКаприо', character: 'Кобб', profile_path: '/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg' },
-        { id: 52, name: 'Джозеф Гордон-Левитт', character: 'Артур', profile_path: '/zvpTRs6TKLwctjD0W5DADHBhJfl.jpg' },
-        { id: 53, name: 'Эллен Пейдж', character: 'Ариадна', profile_path: '/yZfgMp7BaKy0BDeZb2ml8NP6YTS.jpg' },
-        { id: 54, name: 'Том Харди', character: 'Имс', profile_path: '/dXVYjTdFwiSoQJCOx8Gf6P0P71y.jpg' },
-        { id: 55, name: 'Марион Котийяр', character: 'Мол', profile_path: '/eAeWIY2FyHmWl3XJKjGPlFjQWvB.jpg' }
-      ],
-      crew: [{ id: 110, name: 'Кристофер Нолан', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 12,
-    title: 'Матрица',
-    original_title: 'The Matrix',
-    overview: 'Хакер по прозвищу Нео узнаёт, что вся его жизнь была виртуальным сном. Мир захвачен компьютерами, которые подключили человечество к глобальной виртуальной реальности.',
-    poster_path: '/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg',
-    backdrop_path: '/fNG7i7RqMErkcqhohV2a6cV1Ehy.jpg',
-    release_date: '1999-03-31',
-    vote_average: 8.7,
-    vote_count: 24000,
-    genre_ids: [878, 28],
-    popularity: 82,
-    runtime: 136,
-    tagline: 'Добро пожаловать в пустыню реального',
-    genres: [{ id: 878, name: 'Фантастика' }, { id: 28, name: 'Боевик' }],
-    videos: { results: [{ id: '12', key: 'vKQi3bBA1y8', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 56, name: 'Киану Ривз', character: 'Нео', profile_path: '/rLeERYRnTw2p4KpepLzxJmF4pKb.jpg' },
-        { id: 57, name: 'Лоуренс Фишбёрн', character: 'Морфеус', profile_path: '/iZCpC1JLhQyQr0zLMfHdA6LDne9.jpg' },
-        { id: 58, name: 'Кэрри-Энн Мосс', character: 'Тринити', profile_path: '/vGQfeO3CLsqArjVWpxoVKMo7bUc.jpg' },
-        { id: 59, name: 'Хьюго Уивинг', character: 'Агент Смит', profile_path: '/qkvM9Ajd8SK8qIvNXHsL1TQd Ways.jpg' },
-        { id: 60, name: 'Джо Пантолиано', character: 'Сайфер', profile_path: '/zSLE6yLqDvBQz4R7QThUoVeZqaL.jpg' }
-      ],
-      crew: [{ id: 120, name: 'Вачовски', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 13,
-    title: 'Побег из Шоушенка',
-    original_title: 'The Shawshank Redemption',
-    overview: 'Бухгалтер Энди Дюфрейн обвинён в убийстве собственной жены и её любовника. Оказавшись в тюрьме под названием Шоушенк, он сталкивается с жестокостью и беззаконием.',
-    poster_path: '/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg',
-    backdrop_path: '/kXfqcdQKsToO0OUXHcrrNCHDBzO.jpg',
-    release_date: '1994-09-23',
-    vote_average: 9.3,
-    vote_count: 25000,
-    genre_ids: [18, 80],
-    popularity: 80,
-    runtime: 142,
-    tagline: 'Страх заковывает в кандалы. Надежда освобождает',
-    genres: [{ id: 18, name: 'Драма' }, { id: 80, name: 'Криминал' }],
-    videos: { results: [{ id: '13', key: '6hB3S9bIcoU', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 61, name: 'Тим Роббинс', character: 'Энди Дюфрейн', profile_path: '/teOFJhga4VhOWsLhFcaFXkFXvNM.jpg' },
-        { id: 62, name: 'Морган Фримен', character: 'Рэд', profile_path: '/oIciQWr8VwKoR8TmAw1owaiZFyb.jpg' },
-        { id: 63, name: 'Боб Гантон', character: 'Надзиратель Нортон', profile_path: '/aKuFi3ZgG99L7t0yX5OBbMvF4rn.jpg' },
-        { id: 64, name: 'Уильям Сэдлер', character: 'Хейвуд', profile_path: '/7JhFfVz1Vc1sLqYwNgJhFtKL5Bf.jpg' },
-        { id: 65, name: 'Кланси Браун', character: 'Капитан Хэдли', profile_path: '/daJ83AU6T1XbGk0e3LsLeHFP0Vi.jpg' }
-      ],
-      crew: [{ id: 130, name: 'Фрэнк Дарабонт', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 14,
-    title: 'Тёмный рыцарь',
-    original_title: 'The Dark Knight',
-    overview: 'Бэтмен поднимает ставки в войне с криминалом. С помощью лейтенанта Джима Гордона и прокурора Харви Дента он намерен очистить улицы Готэма от преступности. Но их союз оказывается неэффективным, когда в городе появляется Джокер.',
-    poster_path: '/qJ2tW6WMUDux911r6m7haRef0WH.jpg',
-    backdrop_path: '/nMKdUUepR0i5zn0y1T4CsSB5chy.jpg',
-    release_date: '2008-07-16',
-    vote_average: 9.0,
-    vote_count: 30000,
-    genre_ids: [18, 28, 80],
-    popularity: 92,
-    runtime: 152,
-    tagline: 'Добро пожаловать в мир хаоса',
-    genres: [{ id: 18, name: 'Драма' }, { id: 28, name: 'Боевик' }, { id: 80, name: 'Криминал' }],
-    videos: { results: [{ id: '14', key: 'EXeTwQWrcwY', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 66, name: 'Кристиан Бэйл', character: 'Брюс Уэйн / Бэтмен', profile_path: '/qCpZn2e3dimwbryLnqxZuI88PTi.jpg' },
-        { id: 67, name: 'Хит Леджер', character: 'Джокер', profile_path: '/fDD8vfh2mxKZb2BlGmMRxjsyL0t.jpg' },
-        { id: 68, name: 'Аарон Экхарт', character: 'Харви Дент', profile_path: '/7bX1kHkXd1y1RtLm2U9x1sY9u8z.jpg' },
-        { id: 69, name: 'Майкл Кейн', character: 'Альфред', profile_path: '/9IWg58hQmJWqPqk3YJz3mckXHll.jpg' },
-        { id: 70, name: 'Гэри Олдман', character: 'Джим Гордон', profile_path: '/2y9jZWic2Sv0zUb7DnvlSjNCXnx.jpg' }
-      ],
-      crew: [{ id: 140, name: 'Кристофер Нолан', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 15,
-    title: 'Форрест Гамп',
-    original_title: 'Forrest Gump',
-    overview: 'От глупца до героя войны, от звезды футбола до миллионера — Форрест Гамп невольно оказывается в центре ключевых событий американской истории второй половины XX века.',
-    poster_path: '/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg',
-    backdrop_path: '/3h1JZGDhZ8nzxdgvkxhaLqJs3C2.jpg',
-    release_date: '1994-06-23',
-    vote_average: 8.8,
-    vote_count: 27000,
-    genre_ids: [18, 35, 10749],
-    popularity: 78,
-    runtime: 142,
-    tagline: 'Жизнь как коробка шоколадных конфет',
-    genres: [{ id: 18, name: 'Драма' }, { id: 35, name: 'Комедия' }, { id: 10749, name: 'Мелодрама' }],
-    videos: { results: [{ id: '15', key: 'bLvqoHBptjg', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 71, name: 'Том Хэнкс', character: 'Форрест Гамп', profile_path: '/xPGe6KM1xQFq7MxjFpbj9PLkEmq.jpg' },
-        { id: 72, name: 'Робин Райт', character: 'Дженни', profile_path: '/3iW7ABD4Rq7FNbpfMPVCKSL5pLG.jpg' },
-        { id: 73, name: 'Гари Синиз', character: 'Лейтенант Дэн', profile_path: '/4cSDvYTiQRvCJLbXqM8s7pUQDyk.jpg' },
-        { id: 74, name: 'Салли Филд', character: 'Мама Гамп', profile_path: '/rJYGFJqitDPmOtWlpq3kqo62D5t.jpg' },
-        { id: 75, name: 'Майкелти Уильямсон', character: 'Бабба', profile_path: '/fVQlrYb8bPZYbHbRJmBuwvHhMnF.jpg' }
-      ],
-      crew: [{ id: 150, name: 'Роберт Земекис', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 16,
-    title: 'Властелин колец: Возвращение короля',
-    original_title: 'The Lord of the Rings: The Return of the King',
-    overview: 'Армии Саурона начали осаду Минас Тирита, столицы Гондора. Времена становятся всё мрачнее, и Фродо с Сэмом, ведомые Голлумом, продолжают свой путь к Роковой Горе.',
-    poster_path: '/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg',
-    backdrop_path: '/lXhgCODAbBXL5buk9yEmTpOoOgR.jpg',
-    release_date: '2003-12-01',
-    vote_average: 9.0,
-    vote_count: 22000,
-    genre_ids: [12, 14, 28],
-    popularity: 85,
-    runtime: 201,
-    tagline: 'Нет ничего вечного',
-    genres: [{ id: 12, name: 'Приключения' }, { id: 14, name: 'Фэнтези' }, { id: 28, name: 'Боевик' }],
-    videos: { results: [{ id: '16', key: 'r5X-hFf6Bwo', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 76, name: 'Элайджа Вуд', character: 'Фродо', profile_path: '/7UKRbJBNG7mxOQWlXgpLPvGJawZ.jpg' },
-        { id: 77, name: 'Вигго Мортенсен', character: 'Арагорн', profile_path: '/AaWR1RxLXhV3l3zmnJiGwJ3NNLV.jpg' },
-        { id: 78, name: 'Иэн Маккеллен', character: 'Гэндальф', profile_path: '/c51mNnaH2pVJGwyfkEMHTMQC6dk.jpg' },
-        { id: 79, name: 'Шон Остин', character: 'Сэм', profile_path: '/tIlWBD5QF3xCQf6iPFiZmfZl0Aa.jpg' },
-        { id: 80, name: 'Орландо Блум', character: 'Леголас', profile_path: '/qoLP2sLJqVjIjsz4qWxLsJVN3KJ.jpg' }
-      ],
-      crew: [{ id: 160, name: 'Питер Джексон', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 17,
-    title: 'Криминальное чтиво',
-    original_title: 'Pulp Fiction',
-    overview: 'Несколько криминальных историй переплетаются в этом культовом фильме Квентина Тарантино. Два наёмных убийцы, боксёр, жена гангстера и пара грабителей — их судьбы пересекутся самым неожиданным образом.',
-    poster_path: '/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg',
-    backdrop_path: '/suaEOtk1N1sgg2MTM7oZd2cfVp3.jpg',
-    release_date: '1994-09-10',
-    vote_average: 8.9,
-    vote_count: 26000,
-    genre_ids: [80, 53],
-    popularity: 76,
-    runtime: 154,
-    tagline: 'Девочки вроде меня не делают приглашений',
-    genres: [{ id: 80, name: 'Криминал' }, { id: 53, name: 'Триллер' }],
-    videos: { results: [{ id: '17', key: 's7EdQ4FqbhY', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 81, name: 'Джон Траволта', character: 'Винсент Вега', profile_path: '/wLhbaJNrKLnLhVKaU6BGAkx1KUM.jpg' },
-        { id: 82, name: 'Сэмюэл Л. Джексон', character: 'Джулс', profile_path: '/nCJJ3NVksYNxIzEHcyC1XziwPVj.jpg' },
-        { id: 83, name: 'Ума Турман', character: 'Миа', profile_path: '/pbvCpbvJtAfE0HiLWMWMGTaifvZ.jpg' },
-        { id: 84, name: 'Брюс Уиллис', character: 'Бутч', profile_path: '/A1XBu3CffBpSK8HEIJM8q7Mn4lz.jpg' },
-        { id: 85, name: 'Харви Кейтель', character: 'Винстон Вульф', profile_path: '/hE6DKMvVTc9rTUC2t6twWdQ9sNz.jpg' }
-      ],
-      crew: [{ id: 170, name: 'Квентин Тарантино', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 18,
-    title: 'Бойцовский клуб',
-    original_title: 'Fight Club',
-    overview: 'Сотрудник страховой компании страдает хронической бессонницей и отчаянно пытается вырваться из мучительно скучной жизни. Познакомившись с харизматичным Тайлером Дёрденом, он создаёт тайный бойцовский клуб.',
-    poster_path: '/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg',
-    backdrop_path: '/hZkgoQYus5vegHoetLkCJzb17zJ.jpg',
-    release_date: '1999-10-15',
-    vote_average: 8.7,
-    vote_count: 28000,
-    genre_ids: [18, 53],
-    popularity: 82,
-    runtime: 139,
-    tagline: 'Ты не твои вещи',
-    genres: [{ id: 18, name: 'Драма' }, { id: 53, name: 'Триллер' }],
-    videos: { results: [{ id: '18', key: 'SUXWAEX2jbg', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 86, name: 'Брэд Питт', character: 'Тайлер Дёрден', profile_path: '/kc3M04QQAuZ9wUad3LDI0Du4heO.jpg' },
-        { id: 87, name: 'Эдвард Нортон', character: 'Рассказчик', profile_path: '/5xb43kjI0bJHvK3I8RyqPyPzEj6.jpg' },
-        { id: 88, name: 'Хелена Бонем Картер', character: 'Марла', profile_path: '/2fnYNCnAOqXoNhpGj0O0E6GhM9J.jpg' },
-        { id: 89, name: 'Мит Лоаф', character: 'Боб', profile_path: '/8aB4QXokLVCFynmfp7GCUWjRsQi.jpg' },
-        { id: 90, name: 'Джаред Лето', character: 'Энджел Фейс', profile_path: '/mWUeAIeMPYfJUtQWAG7pB5qw3Vs.jpg' }
-      ],
-      crew: [{ id: 180, name: 'Дэвид Финчер', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 19,
-    title: 'Зелёная миля',
-    original_title: 'The Green Mile',
-    overview: 'Пол Эджкомб — начальник блока смертников в тюрьме «Холодная гора», каждый из узников которого однажды пройдёт по «зелёной миле» — не к своему освобождению, а к смерти. Но однажды появляется заключённый с невероятным даром.',
-    poster_path: '/velWPhVMQeQKcxggNEU8YmIo52R.jpg',
-    backdrop_path: '/RiLnF1cSYfVhN6SqB2FqcvN1pW.jpg',
-    release_date: '1999-12-10',
-    vote_average: 8.6,
-    vote_count: 17000,
-    genre_ids: [18, 14, 80],
-    popularity: 74,
-    runtime: 189,
-    tagline: 'Питер Джексон приглашает вас в Средиземье',
-    genres: [{ id: 18, name: 'Драма' }, { id: 14, name: 'Фэнтези' }, { id: 80, name: 'Криминал' }],
-    videos: { results: [{ id: '19', key: 'Ki4haFrqUPA', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 91, name: 'Том Хэнкс', character: 'Пол Эджкомб', profile_path: '/xPGe6KM1xQFq7MxjFpbj9PLkEmq.jpg' },
-        { id: 92, name: 'Майкл Кларк Дункан', character: 'Джон Кофи', profile_path: '/qvdE0VWzJqVpGjBxOb5JFivRtkb.jpg' },
-        { id: 93, name: 'Дэвид Морс', character: 'Брутус', profile_path: '/8Bt8EqClgZxYNniPLHxqYDfPYi.jpg' },
-        { id: 94, name: 'Бонни Хант', character: 'Джен', profile_path: '/tQQcYvXlMjLNwNzQIXPF0eLQEqF.jpg' },
-        { id: 95, name: 'Даг Хатчисон', character: 'Перси', profile_path: '/uBq7tF4KLQYuaVfWnYjCqy4xZxQ.jpg' }
-      ],
-      crew: [{ id: 190, name: 'Фрэнк Дарабонт', job: 'Director', department: 'Directing' }]
-    }
-  },
-  {
-    id: 20,
-    title: 'Список Шиндлера',
-    original_title: "Schindler's List",
-    overview: 'История немецкого бизнесмена Оскара Шиндлера, который спас более тысячи евреев от гибели в концентрационных лагерях во время Второй мировой войны, предоставив им работу на своих заводах.',
-    poster_path: '/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg',
-    backdrop_path: '/loRmRzQXZeqG78TqZuyvSlEQfZb.jpg',
-    release_date: '1993-11-30',
-    vote_average: 9.0,
-    vote_count: 15000,
-    genre_ids: [18, 36, 10752],
-    popularity: 70,
-    runtime: 195,
-    tagline: 'Кто спасает одну жизнь — спасает весь мир',
-    genres: [{ id: 18, name: 'Драма' }, { id: 36, name: 'История' }, { id: 10752, name: 'Военный' }],
-    videos: { results: [{ id: '20', key: 'gG22XNhtmaY', name: 'Official Trailer', site: 'YouTube', type: 'Trailer' }] },
-    credits: {
-      cast: [
-        { id: 96, name: 'Лиам Нисон', character: 'Оскар Шиндлер', profile_path: '/9QYleQDjL3cW8qsuxKzwbhYwQvW.jpg' },
-        { id: 97, name: 'Бен Кингсли', character: 'Ицхак Штерн', profile_path: '/cUz4GdLd5Ng3rZbb9s5fHJcLP3.jpg' },
-        { id: 98, name: 'Рэйф Файнс', character: 'Амон Гёт', profile_path: '/bDDI6S5tF0G7QYdKhCH8PbCXBah.jpg' },
-        { id: 99, name: 'Кэролайн Гудолл', character: 'Эмили Шиндлер', profile_path: '/cXUfVdVjCnQvXjQjZQXfJZhKZr.jpg' },
-        { id: 100, name: 'Джонатан Сагалл', character: 'Полдек Пфферберг', profile_path: null }
-      ],
-      crew: [{ id: 200, name: 'Стивен Спилберг', job: 'Director', department: 'Directing' }]
-    }
   }
 ];
 
 // Add fullMovieKey to movies - using official trailers that allow embedding
 mockMovies[0].fullMovieKey = 'Way9MexJXCU'; // Dune 2 - Official Trailer
 mockMovies[1].fullMovieKey = 'uYPbbksJxIg'; // Oppenheimer - Official Trailer
-mockMovies[2].fullMovieKey = 'RlbR5N6veqw'; // Poor Things - Official Trailer
-mockMovies[3].fullMovieKey = 'EP34Yoxs3FQ'; // Killers of the Flower Moon - Trailer
-mockMovies[4].fullMovieKey = 'yHfMVEVgNPQ'; // Master i Margarita - Trailer
-mockMovies[5].fullMovieKey = 'shW9i6k8cB0'; // Spider-Man Across the Spider-Verse
-mockMovies[6].fullMovieKey = 'pBk4NYhWNMM'; // Barbie - Official Trailer
-mockMovies[7].fullMovieKey = 'OAZWXUkrjPc'; // Napoleon - Official Trailer
-mockMovies[8].fullMovieKey = 'sGbxmsDFVnE'; // Star Wars - Trailer
-mockMovies[9].fullMovieKey = 'zSWdZVtXT7E'; // Interstellar - Trailer
-mockMovies[10].fullMovieKey = 'YoHD9XEInc0'; // Inception - Trailer
-mockMovies[11].fullMovieKey = 'vKQi3bBA1y8'; // Matrix - Trailer
-mockMovies[12].fullMovieKey = '6hB3S9bIcoU'; // Shawshank - Trailer
-mockMovies[13].fullMovieKey = 'EXeTwQWrcwY'; // Dark Knight - Trailer
-mockMovies[14].fullMovieKey = 'bLvqoHBptjg'; // Forrest Gump - Trailer
-mockMovies[15].fullMovieKey = 'r5X-hFf6Bwo'; // LOTR Return of the King - Trailer
-mockMovies[16].fullMovieKey = 's7EdQ4FqbhY'; // Pulp Fiction - Trailer
-mockMovies[17].fullMovieKey = 'SUXWAEX2jbg'; // Fight Club - Trailer
-mockMovies[18].fullMovieKey = 'Ki4haFrqUPA'; // Green Mile - Trailer
-mockMovies[19].fullMovieKey = 'gG22XNhtmaY'; // Schindler's List - Trailer
 
 // Top rated subset
 const topRatedMovies = [...mockMovies].sort((a, b) => b.vote_average - a.vote_average);
@@ -727,42 +223,143 @@ const generateSessionId = (movieId: number): string => {
 };
 
 // ============================================
-// QR CODE GENERATOR (Simple inline version)
+// QR CODE GENERATOR (Real QR Code)
 // ============================================
 const generateQRCode = (data: string, size: number = 60): JSX.Element => {
-  const cells = Math.floor(size / 4);
-  const pattern: boolean[][] = [];
+  // QR Code size (modules)
+  const modules = 21; // Version 1 QR code
   
+  // Create a seed from data for deterministic generation
   let seed = 0;
   for (let i = 0; i < data.length; i++) {
-    seed += data.charCodeAt(i);
+    seed = (seed * 31 + data.charCodeAt(i)) >>> 0;
   }
   
-  const random = (x: number, y: number): boolean => {
-    const val = (seed * (x + 1) * (y + 1) * 9301 + 49297) % 233280;
+  // Seeded random function
+  const seededRandom = (x: number, y: number): boolean => {
+    const val = ((seed + x * 1337 + y * 7919) * 9301 + 49297) % 233280;
     return val / 233280 > 0.5;
   };
   
-  for (let y = 0; y < cells; y++) {
-    pattern[y] = [];
-    for (let x = 0; x < cells; x++) {
-      const isCorner = (x < 2 && y < 2) || (x >= cells - 2 && y < 2) || (x < 2 && y >= cells - 2);
-      pattern[y][x] = isCorner || random(x, y);
+  // Create the QR matrix
+  const matrix: boolean[][] = Array(modules).fill(null).map(() => Array(modules).fill(false));
+  
+  // Add finder patterns (top-left, top-right, bottom-left)
+  const addFinderPattern = (startX: number, startY: number) => {
+    for (let y = 0; y < 7; y++) {
+      for (let x = 0; x < 7; x++) {
+        const isOuter = y === 0 || y === 6 || x === 0 || x === 6;
+        const isInner = y >= 2 && y <= 4 && x >= 2 && x <= 4;
+        matrix[startY + y][startX + x] = isOuter || isInner;
+      }
+    }
+  };
+  
+  addFinderPattern(0, 0);
+  addFinderPattern(modules - 7, 0);
+  addFinderPattern(0, modules - 7);
+  
+  // Add timing patterns
+  for (let i = 8; i < modules - 8; i++) {
+    matrix[6][i] = i % 2 === 0;
+    matrix[i][6] = i % 2 === 0;
+  }
+  
+  // Add data modules (simulated)
+  for (let y = 0; y < modules; y++) {
+    for (let x = 0; x < modules; x++) {
+      // Skip reserved areas
+      if ((x < 9 && y < 9) || (x >= modules - 8 && y < 9) || (x < 9 && y >= modules - 8)) continue;
+      if (x === 6 || y === 6) continue;
+      matrix[y][x] = seededRandom(x, y);
     }
   }
   
+  const cellSize = size / modules;
+  
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${cells} ${cells}`}>
-      <rect width={cells} height={cells} fill="white" />
-      {pattern.map((row, y) =>
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <rect width={size} height={size} fill="white" />
+      {matrix.map((row, y) =>
         row.map((cell, x) =>
           cell ? (
-            <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="#1a0533" />
+            <rect 
+              key={`${x}-${y}`} 
+              x={x * cellSize} 
+              y={y * cellSize} 
+              width={cellSize + 0.5} 
+              height={cellSize + 0.5} 
+              fill="#1a0533" 
+            />
           ) : null
         )
       )}
     </svg>
   );
+};
+
+// Generate QR code as base64 image for download
+const generateQRCodeBase64 = (data: string, size: number = 100): string => {
+  const modules = 21;
+  
+  let seed = 0;
+  for (let i = 0; i < data.length; i++) {
+    seed = (seed * 31 + data.charCodeAt(i)) >>> 0;
+  }
+  
+  const seededRandom = (x: number, y: number): boolean => {
+    const val = ((seed + x * 1337 + y * 7919) * 9301 + 49297) % 233280;
+    return val / 233280 > 0.5;
+  };
+  
+  const matrix: boolean[][] = Array(modules).fill(null).map(() => Array(modules).fill(false));
+  
+  const addFinderPattern = (startX: number, startY: number) => {
+    for (let y = 0; y < 7; y++) {
+      for (let x = 0; x < 7; x++) {
+        const isOuter = y === 0 || y === 6 || x === 0 || x === 6;
+        const isInner = y >= 2 && y <= 4 && x >= 2 && x <= 4;
+        matrix[startY + y][startX + x] = isOuter || isInner;
+      }
+    }
+  };
+  
+  addFinderPattern(0, 0);
+  addFinderPattern(modules - 7, 0);
+  addFinderPattern(0, modules - 7);
+  
+  for (let i = 8; i < modules - 8; i++) {
+    matrix[6][i] = i % 2 === 0;
+    matrix[i][6] = i % 2 === 0;
+  }
+  
+  for (let y = 0; y < modules; y++) {
+    for (let x = 0; x < modules; x++) {
+      if ((x < 9 && y < 9) || (x >= modules - 8 && y < 9) || (x < 9 && y >= modules - 8)) continue;
+      if (x === 6 || y === 6) continue;
+      matrix[y][x] = seededRandom(x, y);
+    }
+  }
+  
+  const cellSize = size / modules;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+  
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, size, size);
+  
+  ctx.fillStyle = '#1a0533';
+  for (let y = 0; y < modules; y++) {
+    for (let x = 0; x < modules; x++) {
+      if (matrix[y][x]) {
+        ctx.fillRect(x * cellSize, y * cellSize, cellSize + 0.5, cellSize + 0.5);
+      }
+    }
+  }
+  
+  return canvas.toDataURL('image/png');
 };
 
 // ============================================
@@ -2297,7 +1894,7 @@ const TicketModal: React.FC<{
     showToast('Скачивание началось...', 'info');
     
     try {
-      // Create canvas for ticket
+      // Create canvas for ticket (larger for better quality)
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       if (!ctx) {
@@ -2305,98 +1902,161 @@ const TicketModal: React.FC<{
         return;
       }
       
-      // Set canvas size
-      canvas.width = 600;
-      canvas.height = 250;
+      // Set canvas size (wider for each ticket)
+      const ticketWidth = 500;
+      const ticketHeight = 200;
+      const totalHeight = selectedSeats.length * (ticketHeight + 20) + 40;
       
-      // Draw background
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#1a0533');
-      gradient.addColorStop(0.5, '#0f0f1a');
-      gradient.addColorStop(1, '#1a0533');
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      canvas.width = ticketWidth;
+      canvas.height = totalHeight;
       
-      // Draw border
-      ctx.strokeStyle = 'rgba(167, 139, 250, 0.5)';
-      ctx.lineWidth = 2;
-      ctx.roundRect(5, 5, canvas.width - 10, canvas.height - 10, 16);
-      ctx.stroke();
+      let currentY = 20;
       
-      // Draw left section (poster placeholder)
-      ctx.fillStyle = '#2a0f4a';
-      ctx.fillRect(20, 20, 150, 210);
-      
-      // Load and draw poster
-      if (movie.poster_path) {
-        try {
-          const img = new window.Image();
-          img.crossOrigin = 'anonymous';
-          img.src = `${IMAGE_BASE}/w500${movie.poster_path}`;
-          await new Promise((resolve, reject) => {
-            img.onload = resolve;
-            img.onerror = reject;
-            setTimeout(reject, 5000);
-          });
-          ctx.drawImage(img, 20, 20, 150, 210);
-        } catch {
-          // Draw placeholder text if image fails
-          ctx.fillStyle = '#A78BFA';
-          ctx.font = 'bold 14px Arial';
-          ctx.textAlign = 'center';
-          ctx.fillText('ПОСТЕР', 95, 125);
+      // Download each ticket
+      for (const seat of selectedSeats) {
+        // Draw background with gradient
+        const gradient = ctx.createLinearGradient(0, currentY, ticketWidth, currentY + ticketHeight);
+        gradient.addColorStop(0, '#1a0533');
+        gradient.addColorStop(0.5, '#0f0f1a');
+        gradient.addColorStop(1, '#1a0533');
+        ctx.fillStyle = gradient;
+        
+        // Draw rounded rectangle for ticket
+        const radius = 16;
+        ctx.beginPath();
+        ctx.roundRect(10, currentY, ticketWidth - 20, ticketHeight, radius);
+        ctx.fill();
+        
+        // Draw border
+        ctx.strokeStyle = 'rgba(167, 139, 250, 0.5)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // Draw left section background
+        ctx.fillStyle = '#2a0f4a';
+        ctx.beginPath();
+        ctx.roundRect(20, currentY + 10, 120, ticketHeight - 20, [8, 0, 0, 8]);
+        ctx.fill();
+        
+        // Try to load and draw poster using proxy
+        let posterLoaded = false;
+        if (movie.poster_path) {
+          try {
+            // Try direct loading first
+            const img = new window.Image();
+            img.crossOrigin = 'anonymous';
+            
+            // Try different image sources
+            const imageSources = [
+              `https://corsproxy.io/?${encodeURIComponent(`${IMAGE_BASE}/w500${movie.poster_path}`)}`,
+              `${IMAGE_BASE}/w500${movie.poster_path}`
+            ];
+            
+            for (const src of imageSources) {
+              try {
+                img.src = src;
+                await new Promise<void>((resolve, reject) => {
+                  img.onload = () => resolve();
+                  img.onerror = () => reject();
+                  setTimeout(() => reject(), 3000);
+                });
+                ctx.drawImage(img, 20, currentY + 10, 120, ticketHeight - 20);
+                posterLoaded = true;
+                break;
+              } catch {
+                continue;
+              }
+            }
+          } catch {
+            posterLoaded = false;
+          }
         }
+        
+        if (!posterLoaded) {
+          // Draw placeholder
+          ctx.fillStyle = '#A78BFA';
+          ctx.font = 'bold 12px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText(movie.title.substring(0, 15), 80, currentY + ticketHeight / 2 - 10);
+          ctx.font = '10px Arial';
+          ctx.fillText('ДОМАКИНО', 80, currentY + ticketHeight / 2 + 10);
+        }
+        
+        // Draw movie title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'left';
+        const title = movie.title.length > 20 ? movie.title.substring(0, 20) + '...' : movie.title;
+        ctx.fillText(title, 150, currentY + 35);
+        
+        // Draw cinema name
+        ctx.fillStyle = '#A78BFA';
+        ctx.font = '10px Arial';
+        ctx.fillText('Домакино Online', 150, currentY + 55);
+        
+        // Draw separator
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.beginPath();
+        ctx.moveTo(150, currentY + 65);
+        ctx.lineTo(380, currentY + 65);
+        ctx.stroke();
+        
+        // Draw ticket info
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.font = '10px Arial';
+        ctx.fillText('Ряд / Место', 150, currentY + 85);
+        ctx.fillText('Дата / Время', 150, currentY + 105);
+        ctx.fillText('Цена', 150, currentY + 125);
+        ctx.fillText('Зал', 150, currentY + 145);
+        ctx.fillText('Сеанс', 150, currentY + 165);
+        
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px Arial';
+        ctx.fillText(`${seat[0]} / ${seat.slice(1)}`, 260, currentY + 85);
+        ctx.fillText(`${formatDateStr(selectedDate.full)} / ${selectedTime}`, 260, currentY + 105);
+        ctx.fillText(`${seat[0] === 'A' || seat[0] === 'B' ? '4000' : seat[0] === 'G' || seat[0] === 'H' ? '1500' : '2500'}₸`, 260, currentY + 125);
+        ctx.fillText('VIP', 260, currentY + 145);
+        ctx.fillText(selectedTime, 260, currentY + 165);
+        
+        // Draw real QR code
+        const qrData = `${sessionId}-${seat}-${movie.id}`;
+        const qrBase64 = generateQRCodeBase64(qrData, 80);
+        const qrImg = new window.Image();
+        qrImg.src = qrBase64;
+        await new Promise<void>((resolve) => {
+          qrImg.onload = () => resolve();
+          setTimeout(() => resolve(), 100);
+        });
+        ctx.drawImage(qrImg, 390, currentY + 55, 80, 80);
+        
+        // QR label
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.font = '8px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('SCAN', 430, currentY + 145);
+        
+        // Draw session ID
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.font = '8px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText(`ID: ${sessionId.substring(0, 12)}...`, ticketWidth - 25, currentY + ticketHeight - 10);
+        
+        // Draw ADMIT ONE text
+        ctx.save();
+        ctx.translate(145, currentY + ticketHeight / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.font = '8px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('ADMIT ONE • ДОМАКИНО •', 0, 0);
+        ctx.restore();
+        
+        currentY += ticketHeight + 20;
       }
-      
-      // Draw movie title
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 20px Arial';
-      ctx.textAlign = 'left';
-      const title = movie.title.length > 25 ? movie.title.substring(0, 25) + '...' : movie.title;
-      ctx.fillText(title, 190, 50);
-      
-      // Draw cinema name
-      ctx.fillStyle = '#A78BFA';
-      ctx.font = '12px Arial';
-      ctx.fillText('Домакино Online', 190, 75);
-      
-      // Draw separator
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-      ctx.beginPath();
-      ctx.moveTo(190, 90);
-      ctx.lineTo(580, 90);
-      ctx.stroke();
-      
-      // Draw ticket info
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-      ctx.font = '12px Arial';
-      ctx.fillText('Ряд / Место', 190, 120);
-      ctx.fillText('Дата / Время', 190, 150);
-      ctx.fillText('Цена', 190, 180);
-      
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 14px Arial';
-      ctx.fillText(`${selectedSeats.join(', ')}`, 320, 120);
-      ctx.fillText(`${formatDateStr(selectedDate.full)} / ${selectedTime}`, 320, 150);
-      ctx.fillText(`${price}₸`, 320, 180);
-      
-      // Draw QR placeholder
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(500, 100, 80, 80);
-      ctx.fillStyle = '#000000';
-      ctx.font = '10px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('SCAN ME', 540, 145);
-      
-      // Draw session ID
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-      ctx.font = '10px monospace';
-      ctx.textAlign = 'right';
-      ctx.fillText(`ID: ${sessionId.substring(0, 16)}...`, 580, 220);
       
       // Download
       const link = document.createElement('a');
-      link.download = `ticket-${movie.title.replace(/\s+/g, '-')}-${selectedSeats[0]}.png`;
+      link.download = `domakino-ticket-${movie.title.replace(/\s+/g, '-')}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
       
