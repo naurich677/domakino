@@ -137,6 +137,93 @@ body {
     background: rgba(255, 255, 255, 0.05);
   }
   
+  /* Glass Button - Ultra Transparent */
+  .glass-btn {
+    background: rgba(255, 255, 255, 0.01);
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: none;
+    box-shadow: inset 0 0.3px 0 rgba(255,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .glass-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.3px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .glass-btn:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+  
+  /* Glass Button Primary - Slightly visible */
+  .glass-btn-primary {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: none;
+    box-shadow: inset 0 0.3px 0 rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .glass-btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.3px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .glass-btn-primary:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+  
+  /* Glass Button Success - Watch/Play buttons */
+  .glass-btn-success {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: none;
+    box-shadow: inset 0 0.3px 0 rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .glass-btn-success::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 0.3px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .glass-btn-success:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+  
   .seat {
     width: 28px;
     height: 26px;

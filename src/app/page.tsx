@@ -941,7 +941,7 @@ const Navbar: React.FC<{ currentPage: string; navigate: (page: string, id?: stri
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('admin')}
                 className={`liquid-glass w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                  currentPage === 'admin' ? 'bg-violet-600 text-white' : 'text-white/70 hover:text-white'
+                  currentPage === 'admin' ? 'glass-btn-primary text-white' : 'text-white/70 hover:text-white'
                 }`}
                 title="Админ панель"
               >
@@ -1085,7 +1085,7 @@ const MovieCard: React.FC<{
 
       {/* Video Available Badge */}
       {hasVideo && (
-        <div className="absolute top-2 right-2 bg-green-500/90 px-2 py-1 rounded-lg text-xs font-semibold text-white z-10 flex items-center gap-1">
+        <div className="absolute top-2 right-2 glass-btn px-2 py-1 rounded-lg text-xs font-semibold text-white z-10 flex items-center gap-1">
           <Play className="w-3 h-3 fill-current" />
           {hasMultiplePlayers ? '2 плеера' : 'HD'}
         </div>
@@ -1100,7 +1100,7 @@ const MovieCard: React.FC<{
             e.stopPropagation();
             onDelete(movie);
           }}
-          className="absolute top-2 left-2 w-8 h-8 rounded-full bg-red-500/80 hover:bg-red-500 flex items-center justify-center text-white z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+          className="absolute top-2 left-2 w-8 h-8 rounded-full glass-btn flex items-center justify-center text-white/70 hover:text-red-400 z-20 opacity-0 group-hover:opacity-100 transition-all"
         >
           <X className="w-4 h-4" />
         </motion.button>
@@ -1129,7 +1129,7 @@ const MovieCard: React.FC<{
                 e.stopPropagation();
                 onPlayFull?.(movie, 1);
               }}
-              className="bg-green-500 hover:bg-green-400 px-6 py-3 rounded-full flex items-center gap-2 text-sm font-semibold text-white transition-colors"
+              className="glass-btn-success px-6 py-3 rounded-full flex items-center gap-2 text-sm font-semibold text-white transition-all"
             >
               <Play className="w-5 h-5 fill-current" />
               Смотреть
@@ -1137,7 +1137,7 @@ const MovieCard: React.FC<{
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="liquid-glass px-6 py-2 rounded-full text-sm font-medium text-white/90"
+              className="glass-btn px-6 py-2 rounded-full text-sm font-medium text-white/80 transition-all"
             >
               Подробнее
             </motion.button>
@@ -1147,7 +1147,7 @@ const MovieCard: React.FC<{
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-violet-600 hover:bg-violet-500 px-6 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-white transition-colors"
+              className="glass-btn-primary px-6 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-white transition-all"
             >
               <Play className="w-4 h-4 fill-current" />
               Трейлер
@@ -1155,7 +1155,7 @@ const MovieCard: React.FC<{
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="liquid-glass px-6 py-2 rounded-full text-sm font-medium text-white/90"
+              className="glass-btn px-6 py-2 rounded-full text-sm font-medium text-white/80 transition-all"
             >
               Подробнее
             </motion.button>
@@ -1409,7 +1409,7 @@ const VideoPlayerModal: React.FC<{
                       <button
                         onClick={() => setActivePlayer(1)}
                         className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                          activePlayer === 1 ? 'bg-violet-500 text-white' : 'text-white/60 hover:text-white'
+                          activePlayer === 1 ? 'glass-btn-primary text-white' : 'glass-btn text-white/60'
                         }`}
                       >
                         Плеер 1
@@ -1417,7 +1417,7 @@ const VideoPlayerModal: React.FC<{
                       <button
                         onClick={() => setActivePlayer(2)}
                         className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                          activePlayer === 2 ? 'bg-violet-500 text-white' : 'text-white/60 hover:text-white'
+                          activePlayer === 2 ? 'glass-btn-primary text-white' : 'glass-btn text-white/60'
                         }`}
                       >
                         Плеер 2
@@ -1658,7 +1658,7 @@ const HomePage: React.FC<{
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => navigate('movie', heroMovie.id.toString())}
-                    className="bg-violet-600 hover:bg-violet-500 px-8 py-3 rounded-full flex items-center gap-2 font-medium text-white transition-colors active:scale-95"
+                    className="glass-btn-primary px-8 py-3 rounded-full flex items-center gap-2 font-medium text-white transition-all active:scale-95"
                   >
                     <Play className="w-5 h-5 fill-current" />
                     Смотреть сейчас
@@ -1667,7 +1667,7 @@ const HomePage: React.FC<{
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => navigate('movie', heroMovie.id.toString())}
-                    className="liquid-glass px-8 py-3 rounded-full flex items-center gap-2 font-medium text-white/90 active:scale-95"
+                    className="glass-btn px-8 py-3 rounded-full flex items-center gap-2 font-medium text-white/80 transition-all"
                   >
                     <Ticket className="w-5 h-5" />
                     Купить билет
@@ -2053,7 +2053,7 @@ const MovieDetailPage: React.FC<{
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
                               onClick={() => onPlayMovie?.(movie)}
-                              className="w-full py-4 rounded-2xl font-semibold text-white flex items-center justify-center gap-3 transition-colors bg-green-500 hover:bg-green-400"
+                              className="w-full py-4 rounded-2xl font-semibold text-white flex items-center justify-center gap-3 transition-all glass-btn-success"
                             >
                               <Play className="w-6 h-6 fill-current" />
                               <span>Плеер 1</span>
@@ -2419,7 +2419,7 @@ const TicketModal: React.FC<{
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleWatchTogether}
-            className="w-full bg-violet-600 hover:bg-violet-500 rounded-full py-3 text-white font-medium flex items-center justify-center gap-2 transition-colors"
+            className="glass-btn-primary rounded-full py-3 text-white font-medium flex items-center justify-center gap-2 transition-all"
           >
             <Play className="w-5 h-5" />
             Смотреть вместе
@@ -2855,7 +2855,7 @@ const VoiceChatPopup: React.FC<{
                 whileTap={{ scale: 0.98 }}
                 onClick={createOffer}
                 disabled={isConnecting}
-                className="bg-violet-600 hover:bg-violet-500 disabled:bg-violet-600/50 rounded-xl py-2.5 text-white text-xs font-medium transition-colors"
+                className="glass-btn-primary disabled:opacity-50 rounded-xl py-2.5 text-white text-xs font-medium transition-all"
               >
                 {isConnecting ? 'Создание...' : 'Создать комнату'}
               </motion.button>
@@ -2901,7 +2901,7 @@ const VoiceChatPopup: React.FC<{
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={acceptAnswer}
-                  className="w-full bg-green-600 hover:bg-green-500 rounded-lg py-2 text-white text-xs font-medium"
+                  className="glass-btn-primary rounded-lg py-2 text-white text-xs font-medium"
                 >
                   Подключить
                 </motion.button>
@@ -2923,7 +2923,7 @@ const VoiceChatPopup: React.FC<{
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={answerOffer}
-                    className="bg-violet-600 hover:bg-violet-500 rounded-lg py-2 text-white text-xs font-medium"
+                    className="glass-btn-primary rounded-lg py-2 text-white text-xs font-medium"
                   >
                     Ответить
                   </motion.button>
@@ -2970,7 +2970,7 @@ const VoiceChatPopup: React.FC<{
               <div className="flex flex-col items-center gap-2">
                 <div className="relative">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-medium ${
-                    micEnabled ? 'bg-violet-600' : 'bg-white/10'
+                    micEnabled ? 'glass-btn-primary text-white' : 'glass-btn text-white/60'
                   }`}>
                     Вы
                   </div>
@@ -3006,7 +3006,7 @@ const VoiceChatPopup: React.FC<{
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleMic}
                 className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
-                  micEnabled ? 'bg-violet-600 text-white' : 'bg-red-600/80 text-white'
+                  micEnabled ? 'glass-btn-primary text-white' : 'glass-btn text-red-400'
                 }`}
               >
                 {micEnabled ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
@@ -3015,7 +3015,7 @@ const VoiceChatPopup: React.FC<{
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setSpeakerEnabled(!speakerEnabled)}
                 className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
-                  speakerEnabled ? 'bg-violet-600 text-white' : 'bg-white/10 text-white/60'
+                  speakerEnabled ? 'glass-btn-primary text-white' : 'glass-btn text-white/60'
                 }`}
               >
                 {speakerEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
@@ -3165,7 +3165,7 @@ const PlayerPage: React.FC<{
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleLoadVideo}
-                    className="w-full bg-violet-600 hover:bg-violet-500 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-white font-semibold flex items-center justify-center gap-2 transition-colors text-sm sm:text-base"
+                    className="w-full glass-btn-primary rounded-xl sm:rounded-2xl py-3 sm:py-4 text-white font-semibold flex items-center justify-center gap-2 transition-all text-sm sm:text-base"
                   >
                     <Play className="w-4 h-4 sm:w-5 sm:h-5" />
                     Загрузить видео
@@ -3632,7 +3632,7 @@ const AdminPanel: React.FC<{
               resetForm();
               setShowForm(true);
             }}
-            className="bg-violet-600 hover:bg-violet-500 px-6 py-3 rounded-xl flex items-center gap-2 font-medium text-white transition-colors"
+            className="glass-btn-primary px-6 py-3 rounded-xl flex items-center gap-2 font-medium text-white transition-all"
           >
             <Plus className="w-5 h-5" />
             Добавить вручную
@@ -4010,7 +4010,7 @@ const AdminPanel: React.FC<{
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleSave}
-                    className="bg-violet-600 hover:bg-violet-500 px-6 py-3 rounded-xl flex items-center gap-2 font-medium text-white transition-colors"
+                    className="glass-btn-primary px-6 py-3 rounded-xl flex items-center gap-2 font-medium text-white transition-all"
                   >
                     <Save className="w-5 h-5" />
                     {isEditing ? 'Сохранить изменения' : 'Добавить фильм'}
