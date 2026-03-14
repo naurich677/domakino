@@ -1047,8 +1047,8 @@ const MovieCard: React.FC<{
   onClick: () => void;
   onPlayFull?: (movie: Movie, player?: 1 | 2) => void;
   onDelete?: (movie: Movie) => void;
-  isAdminMovie?: boolean;
-}> = ({ movie, rank, onClick, onPlayFull, onDelete, isAdminMovie }) => {
+  showDelete?: boolean;
+}> = ({ movie, rank, onClick, onPlayFull, onDelete, showDelete = true }) => {
   const [imageError, setImageError] = useState(false);
   const posterUrl = movie.poster_path
     ? `${IMAGE_BASE}/w500${movie.poster_path}`
@@ -1091,8 +1091,8 @@ const MovieCard: React.FC<{
         </div>
       )}
 
-      {/* Delete button for admin movies */}
-      {isAdminMovie && onDelete && (
+      {/* Delete button for ALL movies */}
+      {showDelete && onDelete && (
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -1597,8 +1597,7 @@ const HomePage: React.FC<{
   navigate: (page: string, id?: string) => void;
   onPlayMovie: (movie: Movie) => void;
   onDeleteMovie?: (movie: Movie) => void;
-  adminMovieIds?: Set<number>;
-}> = ({ trendingMovies, topRatedMovies, loading, navigate, onPlayMovie, onDeleteMovie, adminMovieIds }) => {
+}> = ({ trendingMovies, topRatedMovies, loading, navigate, onPlayMovie, onDeleteMovie }) => {
   const heroMovie = trendingMovies[0];
 
   return (
@@ -1727,7 +1726,7 @@ const HomePage: React.FC<{
                       onClick={() => navigate('movie', movie.id.toString())}
                       onPlayFull={() => onPlayMovie(movie)}
                       onDelete={onDeleteMovie}
-                      isAdminMovie={adminMovieIds?.has(movie.id)}
+                      showDelete={true}
                     />
                   </FadeUp>
                 ))}
@@ -1759,7 +1758,7 @@ const HomePage: React.FC<{
                       onClick={() => navigate('movie', movie.id.toString())}
                       onPlayFull={() => onPlayMovie(movie)}
                       onDelete={onDeleteMovie}
-                      isAdminMovie={adminMovieIds?.has(movie.id)}
+                      showDelete={true}
                     />
                   </FadeUp>
                 ))}
@@ -2296,9 +2295,116 @@ const TicketModal: React.FC<{
 
   const handleDownload = async () => {
     showToast('Скачивание началось...', 'info');
-    setTimeout(() => {
+    
+    try {
+      // Create canvas for ticket
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        showToast('Ошибка при создании билета', 'error');
+        return;
+      }
+      
+      // Set canvas size
+      canvas.width = 600;
+      canvas.height = 250;
+      
+      // Draw background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#1a0533');
+      gradient.addColorStop(0.5, '#0f0f1a');
+      gradient.addColorStop(1, '#1a0533');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw border
+      ctx.strokeStyle = 'rgba(167, 139, 250, 0.5)';
+      ctx.lineWidth = 2;
+      ctx.roundRect(5, 5, canvas.width - 10, canvas.height - 10, 16);
+      ctx.stroke();
+      
+      // Draw left section (poster placeholder)
+      ctx.fillStyle = '#2a0f4a';
+      ctx.fillRect(20, 20, 150, 210);
+      
+      // Load and draw poster
+      if (movie.poster_path) {
+        try {
+          const img = new window.Image();
+          img.crossOrigin = 'anonymous';
+          img.src = `${IMAGE_BASE}/w500${movie.poster_path}`;
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            setTimeout(reject, 5000);
+          });
+          ctx.drawImage(img, 20, 20, 150, 210);
+        } catch {
+          // Draw placeholder text if image fails
+          ctx.fillStyle = '#A78BFA';
+          ctx.font = 'bold 14px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('ПОСТЕР', 95, 125);
+        }
+      }
+      
+      // Draw movie title
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 20px Arial';
+      ctx.textAlign = 'left';
+      const title = movie.title.length > 25 ? movie.title.substring(0, 25) + '...' : movie.title;
+      ctx.fillText(title, 190, 50);
+      
+      // Draw cinema name
+      ctx.fillStyle = '#A78BFA';
+      ctx.font = '12px Arial';
+      ctx.fillText('Домакино Online', 190, 75);
+      
+      // Draw separator
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.beginPath();
+      ctx.moveTo(190, 90);
+      ctx.lineTo(580, 90);
+      ctx.stroke();
+      
+      // Draw ticket info
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.font = '12px Arial';
+      ctx.fillText('Ряд / Место', 190, 120);
+      ctx.fillText('Дата / Время', 190, 150);
+      ctx.fillText('Цена', 190, 180);
+      
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 14px Arial';
+      ctx.fillText(`${selectedSeats.join(', ')}`, 320, 120);
+      ctx.fillText(`${formatDateStr(selectedDate.full)} / ${selectedTime}`, 320, 150);
+      ctx.fillText(`${price}₸`, 320, 180);
+      
+      // Draw QR placeholder
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(500, 100, 80, 80);
+      ctx.fillStyle = '#000000';
+      ctx.font = '10px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('SCAN ME', 540, 145);
+      
+      // Draw session ID
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.font = '10px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText(`ID: ${sessionId.substring(0, 16)}...`, 580, 220);
+      
+      // Download
+      const link = document.createElement('a');
+      link.download = `ticket-${movie.title.replace(/\s+/g, '-')}-${selectedSeats[0]}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
       showToast('Билеты скачаны!', 'success');
-    }, 1500);
+    } catch (error) {
+      console.error('Download error:', error);
+      showToast('Ошибка при скачивании', 'error');
+    }
   };
 
   const handleShare = () => {
@@ -3337,7 +3443,9 @@ const tmdbGenreMap: Record<number, string> = {
 
 const AdminPanel: React.FC<{
   navigate: (page: string) => void;
-}> = ({ navigate }) => {
+  allMovies?: Movie[];
+  onUpdateMovies?: (movies: Movie[]) => void;
+}> = ({ navigate, allMovies = [], onUpdateMovies }) => {
   const { showToast } = useToast();
   const [movies, setMovies] = useState<AdminMovie[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
@@ -3348,6 +3456,9 @@ const AdminPanel: React.FC<{
   const [selectedTmdbMovie, setSelectedTmdbMovie] = useState<TMDBMovie | null>(null);
   const [movieListSearch, setMovieListSearch] = useState('');
   const [version, setVersion] = useState(1);
+  const [showAllMovies, setShowAllMovies] = useState(false);
+  const [editingMainMovie, setEditingMainMovie] = useState<Movie | null>(null);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   
   const [formData, setFormData] = useState<Partial<AdminMovie>>({
     title: '',
@@ -4486,6 +4597,39 @@ const DomokinoApp: React.FC = () => {
             <AdminPanel
               key="admin"
               navigate={navigate}
+              allMovies={allMovies}
+              onUpdateMovies={(updatedMovies) => {
+                // Convert allMovies back to adminMovies format and save
+                const newAdminMovies = updatedMovies
+                  .filter(m => !mockMovies.find(mm => mm.id === m.id))
+                  .map(m => ({
+                    id: `admin-${m.id}-${Date.now()}`,
+                    tmdbId: m.id,
+                    title: m.title,
+                    originalTitle: m.original_title || '',
+                    description: m.overview || '',
+                    posterUrl: m.poster_path ? `${IMAGE_BASE}/w500${m.poster_path}` : '',
+                    backdropUrl: m.backdrop_path ? `${IMAGE_BASE}/w1280${m.backdrop_path}` : '',
+                    year: m.release_date?.split('-')[0] || new Date().getFullYear().toString(),
+                    duration: m.runtime?.toString() || '120',
+                    rating: m.vote_average || 7.0,
+                    genres: m.genres?.map(g => g.name) || [],
+                    player1Url: m.player1Url || '',
+                    player1Quality: m.player1Quality || '720p',
+                    player2Url: m.player2Url || '',
+                    player2Quality: m.player2Quality || '720p',
+                    createdAt: new Date()
+                  }));
+                // Merge with existing admin movies that are in mockMovies
+                const adminMoviesInMock = adminMovies.filter(am => {
+                  const adminId = parseInt(am.id.replace('admin-', '').split('-')[0]) || 0;
+                  return mockMovies.find(mm => mm.id === adminId);
+                });
+                const finalAdminMovies = [...adminMoviesInMock, ...newAdminMovies];
+                setAdminMovies(finalAdminMovies);
+                localStorage.setItem('adminMovies', JSON.stringify(finalAdminMovies));
+                window.dispatchEvent(new CustomEvent('adminMoviesUpdated', { detail: finalAdminMovies }));
+              }}
             />
           )}
 
@@ -4512,7 +4656,7 @@ const DomokinoApp: React.FC = () => {
                         onClick={() => navigate('movie', movie.id.toString())}
                         onPlayFull={() => handlePlayMovie(movie)}
                         onDelete={handleDeleteMovie}
-                        isAdminMovie={adminMovieIds.has(movie.id)}
+                        showDelete={true}
                       />
                     </FadeUp>
                   ))}
