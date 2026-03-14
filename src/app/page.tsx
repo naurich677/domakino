@@ -3347,6 +3347,7 @@ const AdminPanel: React.FC<{
   const [tmdbLoading, setTmdbLoading] = useState(false);
   const [selectedTmdbMovie, setSelectedTmdbMovie] = useState<TMDBMovie | null>(null);
   const [movieListSearch, setMovieListSearch] = useState('');
+  const [version, setVersion] = useState(1);
   
   const [formData, setFormData] = useState<Partial<AdminMovie>>({
     title: '',
@@ -3366,21 +3367,28 @@ const AdminPanel: React.FC<{
   
   const [genreInput, setGenreInput] = useState('');
 
-  // Load movies from localStorage
+  // Load movies and version from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('adminMovies');
     if (saved) {
       setMovies(JSON.parse(saved));
     }
+    const savedVersion = localStorage.getItem('adminVersion');
+    if (savedVersion) {
+      setVersion(parseInt(savedVersion) || 1);
+    }
   }, []);
 
-  // Save movies to localStorage
+  // Save movies to localStorage and increment version
   const saveMovies = useCallback((newMovies: AdminMovie[]) => {
+    const newVersion = version + 1;
     setMovies(newMovies);
+    setVersion(newVersion);
     localStorage.setItem('adminMovies', JSON.stringify(newMovies));
+    localStorage.setItem('adminVersion', newVersion.toString());
     // Dispatch custom event to notify other components
     window.dispatchEvent(new CustomEvent('adminMoviesUpdated', { detail: newMovies }));
-  }, []);
+  }, [version]);
 
   // Generate unique ID
   const generateId = () => `admin-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -3610,6 +3618,9 @@ const AdminPanel: React.FC<{
             <h1 className="font-heading text-2xl md:text-3xl text-white flex items-center gap-3">
               <Settings className="w-8 h-8 text-violet-400" />
               Админ панель
+              <span className="text-sm font-mono bg-white/10 px-2 py-1 rounded-lg text-violet-300">
+                v{version}
+              </span>
             </h1>
             <p className="text-white/60 mt-1">Поиск TMDB и управление фильмами</p>
           </div>
