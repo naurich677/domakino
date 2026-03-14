@@ -1046,7 +1046,9 @@ const MovieCard: React.FC<{
   rank?: number;
   onClick: () => void;
   onPlayFull?: (movie: Movie, player?: 1 | 2) => void;
-}> = ({ movie, rank, onClick, onPlayFull }) => {
+  onDelete?: (movie: Movie) => void;
+  isAdminMovie?: boolean;
+}> = ({ movie, rank, onClick, onPlayFull, onDelete, isAdminMovie }) => {
   const [imageError, setImageError] = useState(false);
   const posterUrl = movie.poster_path
     ? `${IMAGE_BASE}/w500${movie.poster_path}`
@@ -1087,6 +1089,21 @@ const MovieCard: React.FC<{
           <Play className="w-3 h-3 fill-current" />
           {hasMultiplePlayers ? '2 плеера' : 'HD'}
         </div>
+      )}
+
+      {/* Delete button for admin movies */}
+      {isAdminMovie && onDelete && (
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(movie);
+          }}
+          className="absolute top-2 left-2 w-8 h-8 rounded-full bg-red-500/80 hover:bg-red-500 flex items-center justify-center text-white z-20 opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <X className="w-4 h-4" />
+        </motion.button>
       )}
 
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-3 pt-12">
@@ -1579,7 +1596,9 @@ const HomePage: React.FC<{
   loading: boolean;
   navigate: (page: string, id?: string) => void;
   onPlayMovie: (movie: Movie) => void;
-}> = ({ trendingMovies, topRatedMovies, loading, navigate, onPlayMovie }) => {
+  onDeleteMovie?: (movie: Movie) => void;
+  adminMovieIds?: Set<number>;
+}> = ({ trendingMovies, topRatedMovies, loading, navigate, onPlayMovie, onDeleteMovie, adminMovieIds }) => {
   const heroMovie = trendingMovies[0];
 
   return (
@@ -1707,6 +1726,8 @@ const HomePage: React.FC<{
                       rank={index + 1}
                       onClick={() => navigate('movie', movie.id.toString())}
                       onPlayFull={() => onPlayMovie(movie)}
+                      onDelete={onDeleteMovie}
+                      isAdminMovie={adminMovieIds?.has(movie.id)}
                     />
                   </FadeUp>
                 ))}
@@ -1737,6 +1758,8 @@ const HomePage: React.FC<{
                       movie={movie}
                       onClick={() => navigate('movie', movie.id.toString())}
                       onPlayFull={() => onPlayMovie(movie)}
+                      onDelete={onDeleteMovie}
+                      isAdminMovie={adminMovieIds?.has(movie.id)}
                     />
                   </FadeUp>
                 ))}
@@ -4307,31 +4330,61 @@ const DomokinoApp: React.FC = () => {
     return () => window.removeEventListener('adminMoviesUpdated', handleUpdate as EventListener);
   }, []);
 
-  // Combine mock movies with admin movies
+  // Combine mock movies with admin movies (no duplicates)
   const allMovies = useMemo(() => {
-    const converted = adminMovies.map(am => ({
-      id: parseInt(am.id.replace('admin-', '').split('-')[0]) || Math.floor(Math.random() * 100000),
-      title: am.title,
-      original_title: am.originalTitle,
-      overview: am.description,
-      poster_path: am.posterUrl.replace('https://image.tmdb.org/t/p/w500', '').replace('https://image.tmdb.org/t/p/w342', ''),
-      backdrop_path: am.backdropUrl?.replace('https://image.tmdb.org/t/p/w1280', '') || '',
-      release_date: `${am.year}-01-01`,
-      vote_average: am.rating,
-      vote_count: 1000,
-      genre_ids: [],
-      popularity: 80,
-      runtime: parseInt(am.duration) || 120,
-      genres: am.genres.map(g => ({ id: 0, name: g })),
-      videos: { results: [] },
-      credits: { cast: [], crew: [] },
-      player1Url: am.player1Url || undefined,
-      player1Quality: am.player1Quality || '720p',
-      player2Url: am.player2Url || undefined,
-      player2Quality: am.player2Quality || '720p'
-    })) as Movie[];
+    // Get mock movie IDs for deduplication
+    const mockMovieIds = new Set(mockMovies.map(m => m.id));
+    const mockMovieTitles = new Set(mockMovies.map(m => m.title.toLowerCase()));
+    
+    // Convert admin movies and filter out duplicates
+    const converted = adminMovies
+      .filter(am => {
+        // Check if this movie already exists in mockMovies
+        const adminId = parseInt(am.id.replace('admin-', '').split('-')[0]);
+        const titleLower = am.title.toLowerCase();
+        // Keep only if not in mockMovies
+        return !mockMovieIds.has(adminId) && !mockMovieTitles.has(titleLower);
+      })
+      .map(am => ({
+        id: parseInt(am.id.replace('admin-', '').split('-')[0]) || Math.floor(Math.random() * 100000),
+        title: am.title,
+        original_title: am.originalTitle,
+        overview: am.description,
+        poster_path: am.posterUrl.replace('https://image.tmdb.org/t/p/w500', '').replace('https://image.tmdb.org/t/p/w342', ''),
+        backdrop_path: am.backdropUrl?.replace('https://image.tmdb.org/t/p/w1280', '') || '',
+        release_date: `${am.year}-01-01`,
+        vote_average: am.rating,
+        vote_count: 1000,
+        genre_ids: [],
+        popularity: 80,
+        runtime: parseInt(am.duration) || 120,
+        genres: am.genres.map(g => ({ id: 0, name: g })),
+        videos: { results: [] },
+        credits: { cast: [], crew: [] },
+        player1Url: am.player1Url || undefined,
+        player1Quality: am.player1Quality || '720p',
+        player2Url: am.player2Url || undefined,
+        player2Quality: am.player2Quality || '720p'
+      })) as Movie[];
     
     return [...converted, ...mockMovies];
+  }, [adminMovies]);
+
+  // Set of admin movie IDs for checking
+  const adminMovieIds = useMemo(() => {
+    return new Set(adminMovies.map(am => parseInt(am.id.replace('admin-', '').split('-')[0]) || 0));
+  }, [adminMovies]);
+
+  // Delete movie from main screen
+  const handleDeleteMovie = useCallback((movie: Movie) => {
+    const updatedMovies = adminMovies.filter(am => {
+      const adminId = parseInt(am.id.replace('admin-', '').split('-')[0]) || 0;
+      return adminId !== movie.id;
+    });
+    setAdminMovies(updatedMovies);
+    localStorage.setItem('adminMovies', JSON.stringify(updatedMovies));
+    // Dispatch event to update admin panel
+    window.dispatchEvent(new CustomEvent('adminMoviesUpdated', { detail: updatedMovies }));
   }, [adminMovies]);
 
   // Simulate loading
@@ -4394,6 +4447,8 @@ const DomokinoApp: React.FC = () => {
               loading={loading}
               navigate={navigate}
               onPlayMovie={handlePlayMovie}
+              onDeleteMovie={handleDeleteMovie}
+              adminMovieIds={adminMovieIds}
             />
           )}
 
@@ -4445,6 +4500,8 @@ const DomokinoApp: React.FC = () => {
                         movie={movie} 
                         onClick={() => navigate('movie', movie.id.toString())}
                         onPlayFull={() => handlePlayMovie(movie)}
+                        onDelete={handleDeleteMovie}
+                        isAdminMovie={adminMovieIds.has(movie.id)}
                       />
                     </FadeUp>
                   ))}
