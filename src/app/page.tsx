@@ -799,8 +799,31 @@ const VideoPlayerModal: React.FC<{
       .slice(0, 10);
   }, [allMovies, movie.id]);
 
-  // Parse video URL - supports YouTube, VK, and direct links
-  const parseVideoUrl = (url: string): { type: 'youtube' | 'vk' | 'direct'; id: string } | null => {
+  // Convert kinopoisk.ru to kinopoisk.vip for movie access
+  const convertKinopoiskUrl = (url: string): string => {
+    if (url.includes('kinopoisk.ru')) {
+      return url.replace('kinopoisk.ru', 'kinopoisk.vip');
+    }
+    return url;
+  };
+
+  // Extract Kinopoisk ID from URL
+  const extractKinopoiskId = (url: string): string | null => {
+    const match = url.match(/kinopoisk\.(ru|vip)\/film\/(\d+)/);
+    return match ? match[2] : null;
+  };
+
+  // Generate player URLs from Kinopoisk ID
+  const getKinopoiskPlayerUrls = (kpId: string): { player1: string; player2: string } => {
+    // Player 1: Alloha (бесплатный плеер)
+    const player1 = `https://api.alloha.cc/player?kp=${kpId}`;
+    // Player 2: iframe-video (резервный)
+    const player2 = `https://iframe-video.ru/kp/${kpId}`;
+    return { player1, player2 };
+  };
+
+  // Parse video URL - supports YouTube, VK, Kinopoisk, and direct links
+  const parseVideoUrl = (url: string): { type: 'youtube' | 'vk' | 'kinopoisk' | 'kinopoisk-player' | 'direct'; id: string } | null => {
     try {
       // YouTube patterns
       const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/);
@@ -812,6 +835,35 @@ const VideoPlayerModal: React.FC<{
       if (vkMatch) {
         return { type: 'vk', id: `${vkMatch[1]}_${vkMatch[2]}` };
       }
+      
+      // Kinopoisk patterns - extract ID and use embedded player
+      const kpId = extractKinopoiskId(url);
+      if (kpId) {
+        // Return kinopoisk-player type with the ID
+        return { type: 'kinopoisk-player', id: kpId };
+      }
+      
+      // Alloha player pattern
+      const allohaMatch = url.match(/api\.alloha\.cc\/player\?kp=(\d+)/);
+      if (allohaMatch) {
+        return { type: 'kinopoisk-player', id: allohaMatch[1] };
+      }
+      
+      // iframe-video pattern
+      const iframeMatch = url.match(/iframe-video\.ru\/kp\/(\d+)/);
+      if (iframeMatch) {
+        return { type: 'kinopoisk-player', id: iframeMatch[1] };
+      }
+      
+      // Kinopoisk.vip direct link
+      if (url.includes('kinopoisk.vip')) {
+        const vipMatch = url.match(/kinopoisk\.vip\/film\/(\d+)/);
+        if (vipMatch) {
+          return { type: 'kinopoisk-player', id: vipMatch[1] };
+        }
+        return { type: 'kinopoisk', id: url };
+      }
+      
       // Direct link
       if (url.includes('.mp4') || url.includes('.m3u8')) {
         return { type: 'direct', id: url };
@@ -903,7 +955,11 @@ const VideoPlayerModal: React.FC<{
   // Open video in new tab
   const openVideoDirect = () => {
     if (currentPlayerUrl) {
-      window.open(currentPlayerUrl, '_blank');
+      // Convert kinopoisk.ru to kinopoisk.vip for direct access
+      const url = currentPlayerUrl.includes('kinopoisk.ru')
+        ? currentPlayerUrl.replace('kinopoisk.ru', 'kinopoisk.vip')
+        : currentPlayerUrl;
+      window.open(url, '_blank');
     }
   };
 
@@ -939,6 +995,46 @@ const VideoPlayerModal: React.FC<{
           allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
           allowFullScreen
           style={{ border: 'none' }}
+        />
+      );
+    }
+
+    if (videoParams.type === 'kinopoisk') {
+      // Kinopoisk.vip - open film by ID in iframe
+      const kpUrl = videoParams.id.startsWith('http')
+        ? videoParams.id
+        : `https://www.kinopoisk.vip/film/${videoParams.id}/`;
+      return (
+        <iframe
+          src={kpUrl}
+          className="w-full h-full"
+          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+          allowFullScreen
+          style={{ border: 'none' }}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        />
+      );
+    }
+
+    if (videoParams.type === 'kinopoisk-player') {
+      // Use embedded player for Kinopoisk ID
+      // Alloha player - free movie streaming by KP ID
+      // Try multiple players for better availability
+      const players = [
+        `https://api.alloha.cc/player?kp=${videoParams.id}`,
+        `https://voidboost.net/kp/${videoParams.id}`,
+        `https://collaps.cc/embed/${videoParams.id}`,
+      ];
+      // Use the first player (Alloha)
+      const playerUrl = players[0];
+      return (
+        <iframe
+          src={playerUrl}
+          className="w-full h-full"
+          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+          allowFullScreen
+          style={{ border: 'none' }}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
         />
       );
     }
@@ -2902,7 +2998,7 @@ const PlayerPage: React.FC<{
 }> = ({ sessionId, navigate }) => {
   const { showToast } = useToast();
   const [videoUrl, setVideoUrl] = useState('');
-  const [loadedVideo, setLoadedVideo] = useState<{ type: 'youtube' | 'vk'; id: string } | null>(() => {
+  const [loadedVideo, setLoadedVideo] = useState<{ type: 'youtube' | 'vk' | 'kinopoisk' | 'kinopoisk-player'; id: string } | null>(() => {
     if (typeof window !== 'undefined') {
       const videoData = sessionStorage.getItem(`video_${sessionId}`);
       if (videoData) {
@@ -2928,7 +3024,12 @@ const PlayerPage: React.FC<{
       return;
     }
 
-    const youtubeMatch = videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+    // Convert kinopoisk.ru to kinopoisk.vip
+    const convertedUrl = videoUrl.includes('kinopoisk.ru')
+      ? videoUrl.replace('kinopoisk.ru', 'kinopoisk.vip')
+      : videoUrl;
+
+    const youtubeMatch = convertedUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
     if (youtubeMatch) {
       const videoData = { type: 'youtube' as const, id: youtubeMatch[1] };
       setLoadedVideo(videoData);
@@ -2937,12 +3038,42 @@ const PlayerPage: React.FC<{
       return;
     }
 
-    const vkMatch = videoUrl.match(/vk\.com\/video(-?\d+)_(\d+)/);
+    const vkMatch = convertedUrl.match(/vk\.com\/video(-?\d+)_(\d+)/);
     if (vkMatch) {
       const videoData = { type: 'vk' as const, id: `${vkMatch[1]}_${vkMatch[2]}` };
       setLoadedVideo(videoData);
       sessionStorage.setItem(`video_${sessionId}`, JSON.stringify(videoData));
       showToast('Видео загружено!', 'success');
+      return;
+    }
+
+    // Kinopoisk.vip support
+    const kpMatch = convertedUrl.match(/kinopoisk\.vip\/film\/(\d+)/);
+    if (kpMatch) {
+      const videoData = { type: 'kinopoisk-player' as const, id: kpMatch[1] };
+      setLoadedVideo(videoData);
+      sessionStorage.setItem(`video_${sessionId}`, JSON.stringify(videoData));
+      showToast('Фильм с Кинопоиска загружен!', 'success');
+      return;
+    }
+
+    // Also support kinopoisk.ru pattern (will be converted)
+    const kpRuMatch = videoUrl.match(/kinopoisk\.ru\/film\/(\d+)/);
+    if (kpRuMatch) {
+      const videoData = { type: 'kinopoisk-player' as const, id: kpRuMatch[1] };
+      setLoadedVideo(videoData);
+      sessionStorage.setItem(`video_${sessionId}`, JSON.stringify(videoData));
+      showToast('Фильм с Кинопоиска загружен! (плеер)', 'success');
+      return;
+    }
+
+    // Support alloha player URL
+    const allohaMatch = videoUrl.match(/api\.alloha\.cc\/player\?kp=(\d+)/);
+    if (allohaMatch) {
+      const videoData = { type: 'kinopoisk-player' as const, id: allohaMatch[1] };
+      setLoadedVideo(videoData);
+      sessionStorage.setItem(`video_${sessionId}`, JSON.stringify(videoData));
+      showToast('Плеер Alloha загружен!', 'success');
       return;
     }
 
@@ -3006,7 +3137,7 @@ const PlayerPage: React.FC<{
                 </div>
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">Вставьте ссылку на видео</h3>
-                  <p className="text-xs sm:text-sm text-white/50">Поддерживается YouTube и ВКонтакте</p>
+                  <p className="text-xs sm:text-sm text-white/50">Кинопоиск, YouTube или ВКонтакте</p>
                 </div>
                 <div className="space-y-3">
                   <input
@@ -3014,7 +3145,7 @@ const PlayerPage: React.FC<{
                     inputMode="url"
                     value={videoUrl}
                     onChange={e => setVideoUrl(e.target.value)}
-                    placeholder="https://youtube.com/watch?v=..."
+                    placeholder="https://www.kinopoisk.ru/film/258687/"
                     className="video-input-mobile w-full rounded-xl sm:rounded-2xl px-4 py-3 sm:py-4 text-sm sm:text-base outline-none"
                   />
                   <motion.button
@@ -3028,7 +3159,7 @@ const PlayerPage: React.FC<{
                   </motion.button>
                 </div>
                 <p className="text-xs text-white/30 pt-2">
-                  Вставьте ссылку на YouTube или ВК видео
+                  💡 Вставьте ссылку: Кинопоиск (ru→vip), YouTube или ВК
                 </p>
               </div>
             </div>
@@ -3041,14 +3172,30 @@ const PlayerPage: React.FC<{
                   allow="autoplay; encrypted-media; fullscreen"
                   allowFullScreen
                 />
-              ) : (
+              ) : loadedVideo.type === 'vk' ? (
                 <iframe
                   src={`https://vk.com/video_ext.php?oid=${loadedVideo.id.split('_')[0]}&id=${loadedVideo.id.split('_')[1]}&hd=2`}
                   className="w-full h-full"
                   allow="autoplay; encrypted-media; fullscreen"
                   allowFullScreen
                 />
-              )}
+              ) : loadedVideo.type === 'kinopoisk-player' ? (
+                <iframe
+                  src={`https://api.alloha.cc/player?kp=${loadedVideo.id}`}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                />
+              ) : loadedVideo.type === 'kinopoisk' ? (
+                <iframe
+                  src={`https://www.kinopoisk.vip/film/${loadedVideo.id}/`}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                />
+              ) : null}
 
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4">
                 <div className="flex items-center justify-between">
@@ -3772,9 +3919,12 @@ const AdminPanel: React.FC<{
                           type="url"
                           value={formData.player1Url || ''}
                           onChange={(e) => setFormData(prev => ({ ...prev, player1Url: e.target.value }))}
-                          placeholder="Ссылка на видео (YouTube, VK, прямая ссылка)"
+                          placeholder="https://www.kinopoisk.ru/film/258687/"
                           className="w-full liquid-glass rounded-xl px-4 py-3 text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-green-500"
                         />
+                        <p className="text-xs text-white/40">
+                          💡 Вставьте ссылку Кинопоиска - плеер автоматически найдёт фильм
+                        </p>
                         <div className="flex gap-2">
                           <label className="text-xs text-white/40 self-center">Качество:</label>
                           <select
@@ -3801,9 +3951,12 @@ const AdminPanel: React.FC<{
                           type="url"
                           value={formData.player2Url || ''}
                           onChange={(e) => setFormData(prev => ({ ...prev, player2Url: e.target.value }))}
-                          placeholder="Ссылка на видео (YouTube, VK, прямая ссылка)"
+                          placeholder="https://www.kinopoisk.ru/film/258687/"
                           className="w-full liquid-glass rounded-xl px-4 py-3 text-white placeholder-white/30 outline-none focus:ring-2 focus:ring-violet-500"
                         />
+                        <p className="text-xs text-white/40">
+                          💡 Вставьте ссылку Кинопоиска - плеер автоматически найдёт фильм
+                        </p>
                         <div className="flex gap-2">
                           <label className="text-xs text-white/40 self-center">Качество:</label>
                           <select
