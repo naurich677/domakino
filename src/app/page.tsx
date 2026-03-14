@@ -1891,10 +1891,11 @@ const TicketModal: React.FC<{
   const [sessionId] = useState(() => generateSessionId(movie.id));
 
   const handleDownload = () => {
-    showToast('Скачивание началось...', 'info');
+    showToast('Генерация билета...', 'info');
     
     try {
-      // Create canvas for ticket
+      // Create high-resolution canvas (2x for quality)
+      const scale = 2;
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       if (!ctx) {
@@ -1902,141 +1903,178 @@ const TicketModal: React.FC<{
         return;
       }
       
-      // Ticket dimensions
-      const ticketWidth = 450;
-      const ticketHeight = 180;
-      const padding = 15;
+      // High-res ticket dimensions
+      const ticketWidth = 500 * scale;
+      const ticketHeight = 220 * scale;
+      const padding = 20 * scale;
+      const borderRadius = 16 * scale;
       
       // Calculate total height for all tickets
-      const totalHeight = selectedSeats.length * (ticketHeight + 15) + 20;
+      const ticketGap = 20 * scale;
+      const totalHeight = selectedSeats.length * (ticketHeight + ticketGap) + padding;
       
       canvas.width = ticketWidth;
       canvas.height = totalHeight;
+      
+      // Enable high quality rendering
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       
       // Fill background
       ctx.fillStyle = '#07080F';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      let currentY = 10;
+      let currentY = padding / 2;
       
       // Draw each ticket
       for (const seat of selectedSeats) {
-        // Draw ticket background
+        // Draw ticket background with gradient
         const gradient = ctx.createLinearGradient(0, currentY, ticketWidth, currentY + ticketHeight);
-        gradient.addColorStop(0, '#1a0533');
-        gradient.addColorStop(0.5, '#150a20');
-        gradient.addColorStop(1, '#1a0533');
+        gradient.addColorStop(0, '#1a0a2e');
+        gradient.addColorStop(0.5, '#16082a');
+        gradient.addColorStop(1, '#1a0a2e');
         ctx.fillStyle = gradient;
         
-        // Rounded rectangle
+        // Draw rounded rectangle
         ctx.beginPath();
-        ctx.roundRect(padding, currentY, ticketWidth - padding * 2, ticketHeight, 12);
+        ctx.roundRect(padding, currentY, ticketWidth - padding * 2, ticketHeight, borderRadius);
         ctx.fill();
         
-        // Border
-        ctx.strokeStyle = 'rgba(139, 92, 246, 0.6)';
-        ctx.lineWidth = 2;
+        // Draw border
+        ctx.strokeStyle = 'rgba(139, 92, 246, 0.7)';
+        ctx.lineWidth = 3 * scale;
+        ctx.stroke();
+        
+        // Inner glow effect
+        ctx.strokeStyle = 'rgba(167, 139, 250, 0.2)';
+        ctx.lineWidth = 1 * scale;
+        ctx.beginPath();
+        ctx.roundRect(padding + 4 * scale, currentY + 4 * scale, ticketWidth - padding * 2 - 8 * scale, ticketHeight - 8 * scale, borderRadius - 4 * scale);
         ctx.stroke();
         
         // Left section - poster area with gradient
-        const posterGradient = ctx.createLinearGradient(padding + 10, currentY + 10, padding + 110, currentY + ticketHeight - 10);
+        const posterX = padding + 10 * scale;
+        const posterY = currentY + 10 * scale;
+        const posterWidth = 130 * scale;
+        const posterHeight = ticketHeight - 20 * scale;
+        
+        const posterGradient = ctx.createLinearGradient(posterX, posterY, posterX + posterWidth, posterY + posterHeight);
         posterGradient.addColorStop(0, '#7C3AED');
-        posterGradient.addColorStop(0.5, '#A855F7');
+        posterGradient.addColorStop(0.4, '#A855F7');
+        posterGradient.addColorStop(0.7, '#C026D3');
         posterGradient.addColorStop(1, '#EC4899');
         ctx.fillStyle = posterGradient;
         ctx.beginPath();
-        ctx.roundRect(padding + 10, currentY + 10, 100, ticketHeight - 20, 8);
+        ctx.roundRect(posterX, posterY, posterWidth, posterHeight, 10 * scale);
         ctx.fill();
         
-        // Film reel icon
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.lineWidth = 2;
+        // Film reel icon - outer circle
+        const centerX = posterX + posterWidth / 2;
+        const centerY = posterY + 70 * scale;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.lineWidth = 3 * scale;
         ctx.beginPath();
-        ctx.arc(padding + 60, currentY + 55, 22, 0, Math.PI * 2);
+        ctx.arc(centerX, centerY, 30 * scale, 0, Math.PI * 2);
         ctx.stroke();
+        
+        // Film reel holes
+        const holeRadius = 5 * scale;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        for (let i = 0; i < 4; i++) {
+          const angle = (i * Math.PI / 2) + Math.PI / 4;
+          const hx = centerX + Math.cos(angle) * 18 * scale;
+          const hy = centerY + Math.sin(angle) * 18 * scale;
+          ctx.beginPath();
+          ctx.arc(hx, hy, holeRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
         
         // Play button
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.beginPath();
-        ctx.moveTo(padding + 52, currentY + 45);
-        ctx.lineTo(padding + 52, currentY + 65);
-        ctx.lineTo(padding + 70, currentY + 55);
+        const playSize = 15 * scale;
+        ctx.moveTo(centerX - playSize / 2, centerY - playSize);
+        ctx.lineTo(centerX - playSize / 2, centerY + playSize);
+        ctx.lineTo(centerX + playSize, centerY);
         ctx.closePath();
         ctx.fill();
         
         // Movie title on poster
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 9px Arial';
+        ctx.font = `bold ${11 * scale}px Arial, sans-serif`;
         ctx.textAlign = 'center';
-        const shortTitle = movie.title.length > 10 ? movie.title.substring(0, 10) + '..' : movie.title;
-        ctx.fillText(shortTitle, padding + 60, currentY + 95);
+        const shortTitle = movie.title.length > 12 ? movie.title.substring(0, 12) + '..' : movie.title;
+        ctx.fillText(shortTitle, centerX, posterY + posterHeight - 45 * scale);
         
-        // DOMAKINO text
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.font = 'bold 7px Arial';
-        ctx.fillText('ДОМАКИНО', padding + 60, currentY + 110);
-        ctx.font = '6px Arial';
-        ctx.fillText('ONLINE CINEMA', padding + 60, currentY + 120);
-        ctx.fillText('🎬', padding + 60, currentY + 135);
+        // DOMAKINO branding
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.font = `bold ${9 * scale}px Arial, sans-serif`;
+        ctx.fillText('ДОМАКИНО', centerX, posterY + posterHeight - 28 * scale);
+        ctx.font = `${7 * scale}px Arial, sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillText('ONLINE CINEMA', centerX, posterY + posterHeight - 16 * scale);
         
         // Right section - ticket info
         ctx.textAlign = 'left';
+        const infoX = posterX + posterWidth + 20 * scale;
         
         // Movie title
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 14px Arial';
+        ctx.font = `bold ${18 * scale}px Arial, sans-serif`;
         const displayTitle = movie.title.length > 18 ? movie.title.substring(0, 18) + '...' : movie.title;
-        ctx.fillText(displayTitle, padding + 120, currentY + 30);
+        ctx.fillText(displayTitle, infoX, currentY + 40 * scale);
         
         // Cinema name
         ctx.fillStyle = '#A78BFA';
-        ctx.font = '9px Arial';
-        ctx.fillText('Домакино Online Cinema', padding + 120, currentY + 48);
+        ctx.font = `${11 * scale}px Arial, sans-serif`;
+        ctx.fillText('Домакино Online Cinema', infoX, currentY + 62 * scale);
         
         // Separator line
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.lineWidth = 1 * scale;
         ctx.beginPath();
-        ctx.moveTo(padding + 120, currentY + 58);
-        ctx.lineTo(ticketWidth - padding - 80, currentY + 58);
+        ctx.moveTo(infoX, currentY + 75 * scale);
+        ctx.lineTo(ticketWidth - padding - 100 * scale, currentY + 75 * scale);
         ctx.stroke();
         
         // Ticket info - NO PRICE
-        const infoY = currentY + 75;
-        const labelX = padding + 120;
-        const valueX = padding + 210;
+        const infoStartY = currentY + 95 * scale;
+        const labelX = infoX;
+        const valueX = infoX + 110 * scale;
         
-        // Row labels
+        // Labels
         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        ctx.font = '9px Arial';
-        ctx.fillText('Ряд / Место', labelX, infoY);
-        ctx.fillText('Дата', labelX, infoY + 20);
-        ctx.fillText('Время', labelX, infoY + 40);
-        ctx.fillText('Зал', labelX, infoY + 60);
+        ctx.font = `${11 * scale}px Arial, sans-serif`;
+        ctx.fillText('Ряд / Место', labelX, infoStartY);
+        ctx.fillText('Дата', labelX, infoStartY + 26 * scale);
+        ctx.fillText('Время', labelX, infoStartY + 52 * scale);
+        ctx.fillText('Зал', labelX, infoStartY + 78 * scale);
         
-        // Row values
+        // Values
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 10px Arial';
-        ctx.fillText(`${seat[0]} / ${seat.slice(1)}`, valueX, infoY);
-        ctx.fillText(formatDateStr(selectedDate.full), valueX, infoY + 20);
-        ctx.fillText(selectedTime, valueX, infoY + 40);
-        ctx.fillText('VIP', valueX, infoY + 60);
+        ctx.font = `bold ${13 * scale}px Arial, sans-serif`;
+        ctx.fillText(`${seat[0]} / ${seat.slice(1)}`, valueX, infoStartY);
+        ctx.fillText(formatDateStr(selectedDate.full), valueX, infoStartY + 26 * scale);
+        ctx.fillText(selectedTime, valueX, infoStartY + 52 * scale);
+        ctx.fillText('VIP', valueX, infoStartY + 78 * scale);
         
         // QR Code area
-        const qrX = ticketWidth - padding - 75;
-        const qrY = currentY + 50;
-        const qrSize = 70;
+        const qrSize = 85 * scale;
+        const qrX = ticketWidth - padding - qrSize - 10 * scale;
+        const qrY = currentY + (ticketHeight - qrSize) / 2 + 5 * scale;
         
-        // QR code background
+        // QR code white background with rounded corners
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(qrX, qrY, qrSize, qrSize);
+        ctx.beginPath();
+        ctx.roundRect(qrX - 5 * scale, qrY - 5 * scale, qrSize + 10 * scale, qrSize + 10 * scale, 6 * scale);
+        ctx.fill();
         
-        // Generate QR pattern
+        // Generate QR code
         const qrData = `DOMAKINO-${sessionId.substring(0, 8)}-${seat}`;
-        const modules = 21;
+        const modules = 25;
         const cellSize = qrSize / modules;
         
-        // Create seed from data
+        // Create deterministic seed from data
         let seed = 0;
         for (let i = 0; i < qrData.length; i++) {
           seed = (seed * 31 + qrData.charCodeAt(i)) >>> 0;
@@ -2046,54 +2084,79 @@ const TicketModal: React.FC<{
         ctx.fillStyle = '#1a0533';
         for (let y = 0; y < modules; y++) {
           for (let x = 0; x < modules; x++) {
-            // Finder patterns
+            // Finder patterns (corners)
             const isTopLeft = x < 7 && y < 7;
             const isTopRight = x >= modules - 7 && y < 7;
             const isBottomLeft = x < 7 && y >= modules - 7;
             
+            // Alignment pattern (center-ish)
+            const isAlignment = x >= modules - 9 && x < modules - 4 && y >= modules - 9 && y < modules - 4;
+            
             let draw = false;
             
             if (isTopLeft || isTopRight || isBottomLeft) {
-              // Finder pattern logic
+              // Finder pattern
               const localX = isTopRight ? x - (modules - 7) : x;
               const localY = isBottomLeft ? y - (modules - 7) : y;
               const isOuter = localX === 0 || localX === 6 || localY === 0 || localY === 6;
               const isInner = localX >= 2 && localX <= 4 && localY >= 2 && localY <= 4;
               draw = isOuter || isInner;
+            } else if (isAlignment) {
+              // Alignment pattern
+              const localX = x - (modules - 9);
+              const localY = y - (modules - 9);
+              const isOuter = localX === 0 || localX === 4 || localY === 0 || localY === 4;
+              const isInner = localX === 2 && localY === 2;
+              draw = isOuter || isInner;
             } else if (x === 6 || y === 6) {
               // Timing pattern
               draw = (x + y) % 2 === 0;
             } else {
-              // Data area - seeded random
+              // Data area - deterministic pattern
               const val = ((seed + x * 1337 + y * 7919) * 9301 + 49297) % 233280;
               draw = val / 233280 > 0.5;
             }
             
             if (draw) {
-              ctx.fillRect(qrX + x * cellSize, qrY + y * cellSize, cellSize + 0.5, cellSize + 0.5);
+              ctx.fillRect(
+                qrX + x * cellSize, 
+                qrY + y * cellSize, 
+                cellSize + 0.5, 
+                cellSize + 0.5
+              );
             }
           }
         }
         
         // QR label
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        ctx.font = '7px Arial';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.font = `${8 * scale}px Arial, sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText('SCAN', qrX + qrSize / 2, qrY + qrSize + 12);
+        ctx.fillText('SCAN', qrX + qrSize / 2, qrY + qrSize + 15 * scale);
         
         // Session ID
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-        ctx.font = '7px monospace';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.font = `${8 * scale}px monospace`;
         ctx.textAlign = 'right';
-        ctx.fillText(`ID: ${sessionId.substring(0, 10)}`, ticketWidth - padding - 10, currentY + ticketHeight - 8);
+        ctx.fillText(`ID: ${sessionId.substring(0, 12)}`, ticketWidth - padding - 10 * scale, currentY + ticketHeight - 10 * scale);
         
-        currentY += ticketHeight + 15;
+        // ADMIT ONE text on the side
+        ctx.save();
+        ctx.translate(padding + 6 * scale, currentY + ticketHeight / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.font = `bold ${7 * scale}px Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText('ADMIT ONE • ДОМАКИНО •', 0, 0);
+        ctx.restore();
+        
+        currentY += ticketHeight + ticketGap;
       }
       
       // Trigger download
       const link = document.createElement('a');
-      link.download = `domakino-ticket.png`;
-      link.href = canvas.toDataURL('image/png');
+      link.download = `domakino-ticket-${movie.title.replace(/\s+/g, '-')}.png`;
+      link.href = canvas.toDataURL('image/png', 1.0);
       link.click();
       
       showToast('Билеты скачаны!', 'success');
@@ -4064,139 +4127,6 @@ const AdminPanel: React.FC<{
 };
 
 // ============================================
-// FOOTER COMPONENT
-// ============================================
-const Footer: React.FC<{ navigate: (page: string) => void }> = ({ navigate }) => {
-  const [email, setEmail] = useState('');
-  const { showToast } = useToast();
-
-  const handleSubscribe = () => {
-    if (email.trim()) {
-      showToast('Подписка оформлена!', 'success');
-      setEmail('');
-    }
-  };
-
-  return (
-    <footer className="bg-[#07080F] border-t border-white/10 relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2.5">
-              {/* Modern Logo Icon */}
-              <div className="relative w-8 h-8">
-                <svg viewBox="0 0 48 48" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="footerLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#8B5CF6" />
-                      <stop offset="50%" stopColor="#A855F7" />
-                      <stop offset="100%" stopColor="#EC4899" />
-                    </linearGradient>
-                    <linearGradient id="footerLogoGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#7C3AED" />
-                      <stop offset="100%" stopColor="#C084FC" />
-                    </linearGradient>
-                  </defs>
-                  <circle cx="24" cy="24" r="20" fill="url(#footerLogoGradient)" opacity="0.15" />
-                  <circle cx="24" cy="24" r="16" fill="none" stroke="url(#footerLogoGradient)" strokeWidth="2" />
-                  <circle cx="24" cy="12" r="2.5" fill="url(#footerLogoGradient2)" />
-                  <circle cx="24" cy="36" r="2.5" fill="url(#footerLogoGradient2)" />
-                  <circle cx="12" cy="24" r="2.5" fill="url(#footerLogoGradient2)" />
-                  <circle cx="36" cy="24" r="2.5" fill="url(#footerLogoGradient2)" />
-                  <path d="M20 16L34 24L20 32Z" fill="url(#footerLogoGradient)" />
-                </svg>
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="font-bold text-lg tracking-tight">
-                  <span className="text-white">До</span>
-                  <span className="bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">ма</span>
-                  <span className="text-white">кино</span>
-                </span>
-              </div>
-            </div>
-            <p className="text-sm text-white/50">Кино дома. Вместе.</p>
-            <div className="flex gap-3">
-              {[Instagram, Twitter, MessageCircle].map((Icon, idx) => (
-                <motion.button
-                  key={idx}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="liquid-glass w-9 h-9 rounded-full flex items-center justify-center text-white/60 hover:text-white transition-colors"
-                >
-                  <Icon className="w-4 h-4" />
-                </motion.button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-medium text-white mb-4">Фильмы</h4>
-            <ul className="space-y-2">
-              {['Топ недели', 'Новинки', 'По жанрам', 'Сериалы'].map(link => (
-                <li key={link}>
-                  <button
-                    onClick={() => navigate('home')}
-                    className="text-sm text-white/50 hover:text-white transition-colors"
-                  >
-                    {link}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-medium text-white mb-4">Сервис</h4>
-            <ul className="space-y-2">
-              {['Как это работает', 'FAQ', 'Тарифы', 'Поддержка'].map(link => (
-                <li key={link}>
-                  <button className="text-sm text-white/50 hover:text-white transition-colors">
-                    {link}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-medium text-white mb-4">Новинки на почту</h4>
-            <div className="space-y-3">
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Ваш email"
-                className="w-full liquid-glass rounded-xl px-4 py-2 text-white placeholder-white/30 text-sm outline-none focus:ring-2 focus:ring-violet-500"
-              />
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleSubscribe}
-                className="w-full liquid-glass-violet rounded-xl py-2 text-sm font-medium text-white"
-              >
-                Подписаться
-              </motion.button>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-white/40">
-            © 2026 Домакино · Политика конфиденциальности · Условия использования
-          </p>
-          <p className="text-sm text-white/40 flex items-center gap-2">
-            Данные предоставлены
-            <span className="text-violet-400 font-medium">TMDB</span>
-          </p>
-        </div>
-      </div>
-    </footer>
-  );
-};
-
-// ============================================
 // MAIN APP COMPONENT
 // ============================================
 const DomokinoApp: React.FC = () => {
@@ -4510,8 +4440,6 @@ const DomokinoApp: React.FC = () => {
           )}
         </AnimatePresence>
       </main>
-
-      {currentPage !== 'player' && <Footer navigate={navigate} />}
 
       {/* Video Player Modal */}
       <AnimatePresence>
