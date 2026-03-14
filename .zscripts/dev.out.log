@@ -360,3 +360,10 @@ Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allow
 ✓ Compiled in 144ms
  GET / 200 in 82ms (compile: 56ms, render: 26ms)
  GET / 200 in 285ms (compile: 3ms, render: 282ms)
+ GET / 200 in 49ms (compile: 5ms, render: 44ms)
+ GET / 200 in 39ms (compile: 2ms, render: 37ms)
+ GET / 200 in 48ms (compile: 3ms, render: 45ms)
+ GET / 200 in 42ms (compile: 3ms, render: 40ms)
+✓ Compiled in 147ms
+✓ Compiled in 145ms
+✓ Compiled in 151ms
