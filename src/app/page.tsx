@@ -3444,8 +3444,10 @@ const tmdbGenreMap: Record<number, string> = {
 const AdminPanel: React.FC<{
   navigate: (page: string) => void;
   allMovies?: Movie[];
+  hiddenMovies?: Movie[];
+  onRestoreMovie?: (movieId: number) => void;
   onUpdateMovies?: (movies: Movie[]) => void;
-}> = ({ navigate, allMovies = [], onUpdateMovies }) => {
+}> = ({ navigate, allMovies = [], hiddenMovies = [], onRestoreMovie, onUpdateMovies }) => {
   const { showToast } = useToast();
   const [movies, setMovies] = useState<AdminMovie[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
@@ -4267,6 +4269,108 @@ const AdminPanel: React.FC<{
             </div>
           )}
         </div>
+
+        {/* All Movies Section */}
+        <div className="liquid-glass-strong rounded-2xl overflow-hidden mb-8">
+          <div className="p-4 border-b border-white/10 flex items-center justify-between">
+            <h2 className="font-medium text-white">Все фильмы на главном экране ({allMovies.length})</h2>
+            <button
+              onClick={() => setShowAllMovies(!showAllMovies)}
+              className="text-sm text-violet-400 hover:text-violet-300 transition-colors"
+            >
+              {showAllMovies ? 'Скрыть' : 'Показать все'}
+            </button>
+          </div>
+          
+          {showAllMovies && (
+            <div className="p-4 max-h-[400px] overflow-y-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                {allMovies.map((movie, index) => (
+                  <div
+                    key={movie.id}
+                    draggable
+                    onDragStart={() => setDraggedIndex(index)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      if (draggedIndex !== null && draggedIndex !== index && onUpdateMovies) {
+                        const newMovies = [...allMovies];
+                        const [removed] = newMovies.splice(draggedIndex, 1);
+                        newMovies.splice(index, 0, removed);
+                        onUpdateMovies(newMovies);
+                        setDraggedIndex(null);
+                      }
+                    }}
+                    className="liquid-glass rounded-lg overflow-hidden cursor-move hover:ring-2 hover:ring-violet-500/50 transition-all"
+                  >
+                    <div className="aspect-[2/3] relative">
+                      {movie.poster_path ? (
+                        <img
+                          src={`${IMAGE_BASE}/w342${movie.poster_path}`}
+                          alt={movie.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-white/5 flex items-center justify-center">
+                          <Film className="w-6 h-6 text-white/20" />
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-2">
+                        <p className="text-xs text-white truncate">{movie.title}</p>
+                        <p className="text-[10px] text-white/50">#{index + 1}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-white/40 mt-4 text-center">
+                Перетащите фильмы для изменения порядка
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Hidden Movies Section */}
+        {hiddenMovies.length > 0 && (
+          <div className="liquid-glass-strong rounded-2xl overflow-hidden">
+            <div className="p-4 border-b border-white/10">
+              <h2 className="font-medium text-white">Скрытые фильмы ({hiddenMovies.length})</h2>
+              <p className="text-xs text-white/40 mt-1">Фильмы, удалённые с главного экрана</p>
+            </div>
+            
+            <div className="divide-y divide-white/5">
+              {hiddenMovies.map((movie) => (
+                <div key={movie.id} className="p-4 flex items-center gap-4 hover:bg-white/5 transition-colors">
+                  <div className="w-12 h-18 shrink-0 rounded-lg overflow-hidden bg-white/5">
+                    {movie.poster_path ? (
+                      <img
+                        src={`${IMAGE_BASE}/w185${movie.poster_path}`}
+                        alt={movie.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Film className="w-4 h-4 text-white/20" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm text-white truncate">{movie.title}</h3>
+                    <p className="text-xs text-white/40">{movie.release_date?.split('-')[0]}</p>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onRestoreMovie?.(movie.id)}
+                    className="glass-btn-primary px-4 py-2 rounded-lg text-xs text-white"
+                  >
+                    Восстановить
+                  </motion.button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -4431,6 +4535,7 @@ const DomokinoApp: React.FC = () => {
   const [movieLoading, setMovieLoading] = useState(false);
   const [playingMovie, setPlayingMovie] = useState<Movie | null>(null);
   const [adminMovies, setAdminMovies] = useState<AdminMovie[]>([]);
+  const { showToast } = useToast();
 
   // Load admin movies from localStorage
   useEffect(() => {
@@ -4492,22 +4597,72 @@ const DomokinoApp: React.FC = () => {
     return [...converted, ...mockMovies];
   }, [adminMovies]);
 
+  // Hidden movie IDs (deleted from main screen)
+  const [hiddenMovieIds, setHiddenMovieIds] = useState<Set<number>>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('hiddenMovieIds');
+      if (saved) {
+        return new Set(JSON.parse(saved));
+      }
+    }
+    return new Set();
+  });
+
+  // All movies with hidden ones filtered out
+  const displayedMovies = useMemo(() => {
+    return allMovies.filter(m => !hiddenMovieIds.has(m.id));
+  }, [allMovies, hiddenMovieIds]);
+
+  // Displayed top rated movies
+  const displayedTopRated = useMemo(() => {
+    return displayedMovies.sort((a, b) => b.vote_average - a.vote_average);
+  }, [displayedMovies]);
+
   // Set of admin movie IDs for checking
   const adminMovieIds = useMemo(() => {
     return new Set(adminMovies.map(am => parseInt(am.id.replace('admin-', '').split('-')[0]) || 0));
   }, [adminMovies]);
 
-  // Delete movie from main screen
+  // Delete ANY movie from main screen
   const handleDeleteMovie = useCallback((movie: Movie) => {
-    const updatedMovies = adminMovies.filter(am => {
+    // Check if it's an admin-added movie
+    const isAdminMovie = adminMovies.some(am => {
       const adminId = parseInt(am.id.replace('admin-', '').split('-')[0]) || 0;
-      return adminId !== movie.id;
+      return adminId === movie.id;
     });
-    setAdminMovies(updatedMovies);
-    localStorage.setItem('adminMovies', JSON.stringify(updatedMovies));
-    // Dispatch event to update admin panel
-    window.dispatchEvent(new CustomEvent('adminMoviesUpdated', { detail: updatedMovies }));
-  }, [adminMovies]);
+    
+    if (isAdminMovie) {
+      // Remove from admin movies
+      const updatedMovies = adminMovies.filter(am => {
+        const adminId = parseInt(am.id.replace('admin-', '').split('-')[0]) || 0;
+        return adminId !== movie.id;
+      });
+      setAdminMovies(updatedMovies);
+      localStorage.setItem('adminMovies', JSON.stringify(updatedMovies));
+      window.dispatchEvent(new CustomEvent('adminMoviesUpdated', { detail: updatedMovies }));
+    } else {
+      // Add to hidden movies
+      const newHiddenIds = new Set(hiddenMovieIds);
+      newHiddenIds.add(movie.id);
+      setHiddenMovieIds(newHiddenIds);
+      localStorage.setItem('hiddenMovieIds', JSON.stringify([...newHiddenIds]));
+    }
+    showToast(`Фильм "${movie.title}" удалён`, 'success');
+  }, [adminMovies, hiddenMovieIds, showToast]);
+
+  // Restore hidden movie
+  const handleRestoreMovie = useCallback((movieId: number) => {
+    const newHiddenIds = new Set(hiddenMovieIds);
+    newHiddenIds.delete(movieId);
+    setHiddenMovieIds(newHiddenIds);
+    localStorage.setItem('hiddenMovieIds', JSON.stringify([...newHiddenIds]));
+    showToast('Фильм восстановлен', 'success');
+  }, [hiddenMovieIds, showToast]);
+
+  // Get hidden movies list
+  const hiddenMovies = useMemo(() => {
+    return allMovies.filter(m => hiddenMovieIds.has(m.id));
+  }, [allMovies, hiddenMovieIds]);
 
   // Simulate loading
   useEffect(() => {
@@ -4564,8 +4719,8 @@ const DomokinoApp: React.FC = () => {
           {currentPage === 'home' && (
             <HomePage
               key="home"
-              trendingMovies={allMovies}
-              topRatedMovies={allTopRated}
+              trendingMovies={displayedMovies}
+              topRatedMovies={displayedTopRated}
               loading={loading}
               navigate={navigate}
               onPlayMovie={handlePlayMovie}
@@ -4598,6 +4753,8 @@ const DomokinoApp: React.FC = () => {
               key="admin"
               navigate={navigate}
               allMovies={allMovies}
+              hiddenMovies={hiddenMovies}
+              onRestoreMovie={handleRestoreMovie}
               onUpdateMovies={(updatedMovies) => {
                 // Convert allMovies back to adminMovies format and save
                 const newAdminMovies = updatedMovies
