@@ -1910,16 +1910,20 @@ const TicketModal: React.FC<{
       canvas.width = ticketWidth;
       canvas.height = totalHeight;
       
+      // Fill background
+      ctx.fillStyle = '#07080F';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
       let currentY = 20;
       
       // Download each ticket
       for (const seat of selectedSeats) {
         // Draw background with gradient
-        const gradient = ctx.createLinearGradient(0, currentY, ticketWidth, currentY + ticketHeight);
-        gradient.addColorStop(0, '#1a0533');
-        gradient.addColorStop(0.5, '#0f0f1a');
-        gradient.addColorStop(1, '#1a0533');
-        ctx.fillStyle = gradient;
+        const bgGradient = ctx.createLinearGradient(0, currentY, ticketWidth, currentY + ticketHeight);
+        bgGradient.addColorStop(0, '#1a0533');
+        bgGradient.addColorStop(0.5, '#0f0f1a');
+        bgGradient.addColorStop(1, '#1a0533');
+        ctx.fillStyle = bgGradient;
         
         // Draw rounded rectangle for ticket
         const radius = 16;
@@ -1932,55 +1936,46 @@ const TicketModal: React.FC<{
         ctx.lineWidth = 2;
         ctx.stroke();
         
-        // Draw left section background
-        ctx.fillStyle = '#2a0f4a';
+        // Draw left section with poster gradient
+        const posterGradient = ctx.createLinearGradient(20, currentY + 10, 140, currentY + ticketHeight - 10);
+        posterGradient.addColorStop(0, '#8B5CF6');
+        posterGradient.addColorStop(0.5, '#A855F7');
+        posterGradient.addColorStop(1, '#EC4899');
+        ctx.fillStyle = posterGradient;
         ctx.beginPath();
         ctx.roundRect(20, currentY + 10, 120, ticketHeight - 20, [8, 0, 0, 8]);
         ctx.fill();
         
-        // Try to load and draw poster using proxy
-        let posterLoaded = false;
-        if (movie.poster_path) {
-          try {
-            // Try direct loading first
-            const img = new window.Image();
-            img.crossOrigin = 'anonymous';
-            
-            // Try different image sources
-            const imageSources = [
-              `https://corsproxy.io/?${encodeURIComponent(`${IMAGE_BASE}/w500${movie.poster_path}`)}`,
-              `${IMAGE_BASE}/w500${movie.poster_path}`
-            ];
-            
-            for (const src of imageSources) {
-              try {
-                img.src = src;
-                await new Promise<void>((resolve, reject) => {
-                  img.onload = () => resolve();
-                  img.onerror = () => reject();
-                  setTimeout(() => reject(), 3000);
-                });
-                ctx.drawImage(img, 20, currentY + 10, 120, ticketHeight - 20);
-                posterLoaded = true;
-                break;
-              } catch {
-                continue;
-              }
-            }
-          } catch {
-            posterLoaded = false;
-          }
-        }
+        // Draw film icon on poster
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(80, currentY + 70, 25, 0, Math.PI * 2);
+        ctx.stroke();
         
-        if (!posterLoaded) {
-          // Draw placeholder
-          ctx.fillStyle = '#A78BFA';
-          ctx.font = 'bold 12px Arial';
-          ctx.textAlign = 'center';
-          ctx.fillText(movie.title.substring(0, 15), 80, currentY + ticketHeight / 2 - 10);
-          ctx.font = '10px Arial';
-          ctx.fillText('ДОМАКИНО', 80, currentY + ticketHeight / 2 + 10);
-        }
+        // Play button triangle
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.beginPath();
+        ctx.moveTo(72, currentY + 58);
+        ctx.lineTo(72, currentY + 82);
+        ctx.lineTo(92, currentY + 70);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Draw movie title on poster
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px Arial';
+        ctx.textAlign = 'center';
+        const posterTitle = movie.title.length > 12 ? movie.title.substring(0, 12) + '...' : movie.title;
+        ctx.fillText(posterTitle, 80, currentY + 115);
+        
+        // Draw DOMAKINO logo
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.font = '8px Arial';
+        ctx.fillText('ДОМАКИНО', 80, currentY + 130);
+        ctx.fillText('ONLINE', 80, currentY + 142);
+        ctx.fillText('CINEMA', 80, currentY + 154);
+        ctx.fillText('🎬', 80, currentY + 170);
         
         // Draw movie title
         ctx.fillStyle = '#ffffff';
@@ -2019,13 +2014,14 @@ const TicketModal: React.FC<{
         ctx.fillText(selectedTime, 260, currentY + 165);
         
         // Draw real QR code
-        const qrData = `${sessionId}-${seat}-${movie.id}`;
+        const qrData = `DOMAKINO-${sessionId}-${seat}-${movie.id}`;
         const qrBase64 = generateQRCodeBase64(qrData, 80);
         const qrImg = new window.Image();
         qrImg.src = qrBase64;
         await new Promise<void>((resolve) => {
           qrImg.onload = () => resolve();
-          setTimeout(() => resolve(), 100);
+          qrImg.onerror = () => resolve();
+          setTimeout(() => resolve(), 50);
         });
         ctx.drawImage(qrImg, 390, currentY + 55, 80, 80);
         
@@ -2033,7 +2029,7 @@ const TicketModal: React.FC<{
         ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
         ctx.font = '8px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('SCAN', 430, currentY + 145);
+        ctx.fillText('SCAN ME', 430, currentY + 145);
         
         // Draw session ID
         ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
@@ -2043,13 +2039,19 @@ const TicketModal: React.FC<{
         
         // Draw ADMIT ONE text
         ctx.save();
-        ctx.translate(145, currentY + ticketHeight / 2);
+        ctx.translate(148, currentY + ticketHeight / 2);
         ctx.rotate(-Math.PI / 2);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-        ctx.font = '8px Arial';
+        ctx.font = 'bold 8px Arial';
         ctx.textAlign = 'center';
         ctx.fillText('ADMIT ONE • ДОМАКИНО •', 0, 0);
         ctx.restore();
+        
+        // Draw decorative elements
+        ctx.fillStyle = 'rgba(167, 139, 250, 0.2)';
+        ctx.beginPath();
+        ctx.arc(ticketWidth - 50, currentY + 30, 20, 0, Math.PI * 2);
+        ctx.fill();
         
         currentY += ticketHeight + 20;
       }
