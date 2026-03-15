@@ -912,7 +912,7 @@ const VideoPlayerModal: React.FC<{
     };
   }, []);
 
-  const toggleFullscreen = async () => {
+  const toggleFullscreen = useCallback(async () => {
     if (!containerRef.current) return;
     
     try {
@@ -937,20 +937,38 @@ const VideoPlayerModal: React.FC<{
     } catch (error) {
       console.log('Fullscreen not supported');
     }
-  };
+  }, []);
 
-  // Handle escape key
+  // Keyboard shortcuts for player control
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
-      } else if (e.key === 'f' || e.key === 'F') {
+        return;
+      }
+
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
         toggleFullscreen();
+        return;
+      }
+
+      if (e.key === 'h' || e.key === 'H') {
+        e.preventDefault();
+        setShowControls((prev) => !prev);
+        return;
+      }
+
+      if (hasMultiplePlayers && (e.key === '1' || e.key === '2')) {
+        e.preventDefault();
+        setActivePlayer(e.key === '1' ? 1 : 2);
+        resetControlsTimeout();
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [hasMultiplePlayers, onClose, resetControlsTimeout, toggleFullscreen]);
 
   // Open video in new tab
   const openVideoDirect = () => {
@@ -1058,6 +1076,14 @@ const VideoPlayerModal: React.FC<{
       className="fixed inset-0 z-50 bg-black"
       ref={containerRef}
       onMouseMove={resetControlsTimeout}
+      onTouchStart={resetControlsTimeout}
+      onClick={() => {
+        if (isFullscreen) {
+          setShowControls((prev) => !prev);
+        } else {
+          resetControlsTimeout();
+        }
+      }}
     >
       {/* Video iframe */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -1238,22 +1264,6 @@ const VideoPlayerModal: React.FC<{
         )}
       </AnimatePresence>
 
-      {/* Show controls hint when hidden */}
-      {!showControls && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        >
-          <motion.div
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="text-white/30 text-sm"
-          >
-            Двигайте мышкой для управления
-          </motion.div>
-        </motion.div>
-      )}
     </motion.div>
   );
 };
