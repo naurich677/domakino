@@ -35,7 +35,9 @@ import {
   Edit,
   Save,
   Settings,
-  Eye
+  Eye,
+  Heart,
+  Clock3
 } from 'lucide-react';
 
 // ============================================
@@ -430,203 +432,99 @@ const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 const useToast = () => React.useContext(ToastContext);
 
 // ============================================
-// NAVBAR COMPONENT
+// NAVBAR / SIDEBAR COMPONENT
 // ============================================
 const Navbar: React.FC<{ currentPage: string; navigate: (page: string, id?: string) => void }> = ({ currentPage, navigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navLinks = [
-    { label: 'Главная', page: 'home' },
-    { label: 'Фильмы', page: 'movies' },
-    { label: 'Сериалы', page: 'series' },
-    { label: 'Новинки', page: 'new' }
+  const primaryItems = [
+    { label: 'Home', page: 'home', icon: Clapperboard },
+    { label: 'Search', page: 'movies', icon: Search },
   ];
+
+  const mediaItems = [
+    { label: 'Movies', page: 'movies', icon: Film },
+    { label: 'TV Shows', page: 'series', icon: Users },
+    { label: 'Anime', page: 'new', icon: Star },
+  ];
+
+  const miscItems = [
+    { label: 'Watchlist', page: 'home', icon: Heart },
+    { label: 'History', page: 'home', icon: Clock3 },
+    { label: 'Admin', page: 'admin', icon: Settings },
+  ];
+
+  const renderNavItems = (items: { label: string; page: string; icon: any }[]) => (
+    <div className="space-y-1.5">
+      {items.map((item) => {
+        const Icon = item.icon;
+        const isActive = currentPage === item.page;
+        return (
+          <button
+            key={`${item.label}-${item.page}`}
+            onClick={() => {
+              navigate(item.page);
+              setMobileMenuOpen(false);
+            }}
+            className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+              isActive
+                ? 'bg-white/12 text-white'
+                : 'text-white/75 hover:text-white hover:bg-white/8'
+            }`}
+          >
+            <Icon className="w-4 h-4" />
+            <span>{item.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'liquid-glass-strong' : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 md:h-20">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => navigate('home')}
-              className="flex items-center gap-2.5 group relative"
-            >
-              {/* Modern Logo Icon */}
-              <div className="relative w-9 h-9 md:w-10 md:h-10">
-                <svg viewBox="0 0 48 48" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#8B5CF6" />
-                      <stop offset="50%" stopColor="#A855F7" />
-                      <stop offset="100%" stopColor="#EC4899" />
-                    </linearGradient>
-                    <linearGradient id="logoGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#7C3AED" />
-                      <stop offset="100%" stopColor="#C084FC" />
-                    </linearGradient>
-                    <filter id="glow">
-                      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                      <feMerge>
-                        <feMergeNode in="coloredBlur"/>
-                        <feMergeNode in="SourceGraphic"/>
-                      </feMerge>
-                    </filter>
-                  </defs>
-                  {/* Film reel background */}
-                  <circle cx="24" cy="24" r="20" fill="url(#logoGradient)" opacity="0.15" />
-                  <circle cx="24" cy="24" r="16" fill="none" stroke="url(#logoGradient)" strokeWidth="2" />
-                  {/* Film holes */}
-                  <circle cx="24" cy="12" r="2.5" fill="url(#logoGradient2)" filter="url(#glow)" />
-                  <circle cx="24" cy="36" r="2.5" fill="url(#logoGradient2)" filter="url(#glow)" />
-                  <circle cx="12" cy="24" r="2.5" fill="url(#logoGradient2)" filter="url(#glow)" />
-                  <circle cx="36" cy="24" r="2.5" fill="url(#logoGradient2)" filter="url(#glow)" />
-                  {/* Play button */}
-                  <path d="M20 16L34 24L20 32Z" fill="url(#logoGradient)" filter="url(#glow)" className="group-hover:scale-110 transition-transform origin-center" style={{transformOrigin: '24px 24px'}} />
-                </svg>
-                {/* Animated ring on hover */}
-                <div className="absolute inset-0 rounded-full border-2 border-violet-500/0 group-hover:border-violet-500/50 group-hover:scale-110 transition-all duration-300" />
-              </div>
-              
-              {/* Modern Typography */}
-              <div className="flex flex-col leading-none">
-                <span className="font-bold text-lg md:text-xl tracking-tight">
-                  <span className="text-white">До</span>
-                  <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">ма</span>
-                  <span className="text-white">кино</span>
-                </span>
-                <span className="text-[8px] md:text-[9px] text-violet-400/60 tracking-[0.2em] uppercase font-medium -mt-0.5">Online Cinema</span>
-              </div>
-            </motion.button>
+      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-40 z-50 bg-[#0f1014] border-r border-white/10 p-3 flex-col">
+        <button
+          onClick={() => navigate('home')}
+          className="text-3xl font-black tracking-tight text-white text-left px-1 mb-4"
+        >
+          StreameX
+        </button>
 
-            <div className="hidden md:flex items-center gap-2">
-              {navLinks.map(link => (
-                <motion.button
-                  key={link.page}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => navigate(link.page)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                    currentPage === link.page
-                      ? 'liquid-glass-violet text-white'
-                      : 'liquid-glass text-white/70 hover:text-white'
-                  }`}
-                >
-                  {link.label}
-                </motion.button>
-              ))}
-            </div>
-
-            <div className="hidden md:flex items-center gap-3">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('admin')}
-                className={`liquid-glass w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-                  currentPage === 'admin' ? 'glass-btn-primary text-white' : 'text-white/70 hover:text-white'
-                }`}
-                title="Админ панель"
-              >
-                <Settings className="w-5 h-5" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="liquid-glass w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors"
-              >
-                <Search className="w-5 h-5" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="liquid-glass-violet px-5 py-2 rounded-full flex items-center gap-2 text-sm font-medium text-white"
-              >
-                <User className="w-4 h-4" />
-                Войти
-              </motion.button>
-            </div>
-
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden liquid-glass w-10 h-10 rounded-full flex items-center justify-center text-white"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </motion.button>
-          </div>
+        <div className="bg-[#17181d] rounded-xl p-2 mb-3">
+          {renderNavItems(primaryItems)}
         </div>
-      </motion.nav>
+
+        <div className="bg-[#17181d] rounded-xl p-2 mb-3">
+          <p className="text-[10px] uppercase tracking-wider text-white/30 px-1 mb-2">Media</p>
+          {renderNavItems(mediaItems)}
+        </div>
+
+        <div className="bg-[#17181d] rounded-xl p-2 mt-auto">
+          <p className="text-[10px] uppercase tracking-wider text-white/30 px-1 mb-2">More</p>
+          {renderNavItems(miscItems)}
+        </div>
+      </aside>
+
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#0f1014]/95 backdrop-blur border-b border-white/10 p-3 flex items-center justify-between">
+        <button onClick={() => navigate('home')} className="text-2xl font-black text-white">StreameX</button>
+        <button
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white"
+        >
+          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
 
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease }}
-            className="fixed top-16 left-0 right-0 z-40 liquid-glass-strong md:hidden"
+            exit={{ opacity: 0, y: -10 }}
+            className="md:hidden fixed top-16 left-0 right-0 z-40 bg-[#111217] border-b border-white/10 p-4"
           >
-            <div className="p-4 flex flex-col gap-2">
-              {navLinks.map((link, idx) => (
-                <motion.button
-                  key={link.page}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  onClick={() => {
-                    navigate(link.page);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`px-4 py-3 rounded-xl text-left font-medium transition-all ${
-                    currentPage === link.page
-                      ? 'liquid-glass-violet text-white'
-                      : 'liquid-glass text-white/70'
-                  }`}
-                >
-                  {link.label}
-                </motion.button>
-              ))}
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navLinks.length * 0.05 }}
-                onClick={() => {
-                  navigate('admin');
-                  setMobileMenuOpen(false);
-                }}
-                className={`px-4 py-3 rounded-xl text-left font-medium transition-all flex items-center gap-2 ${
-                  currentPage === 'admin'
-                    ? 'liquid-glass-violet text-white'
-                    : 'liquid-glass text-white/70'
-                }`}
-              >
-                <Settings className="w-4 h-4" />
-                Админ панель
-              </motion.button>
-              <motion.button
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: (navLinks.length + 1) * 0.05 }}
-                className="liquid-glass-violet px-4 py-3 rounded-xl flex items-center gap-2 font-medium text-white mt-2"
-              >
-                <User className="w-4 h-4" />
-                Войти
-              </motion.button>
+            <div className="space-y-3">
+              {renderNavItems([...primaryItems, ...mediaItems, ...miscItems])}
             </div>
           </motion.div>
         )}
@@ -912,7 +810,7 @@ const VideoPlayerModal: React.FC<{
     };
   }, []);
 
-  const toggleFullscreen = async () => {
+  const toggleFullscreen = useCallback(async () => {
     if (!containerRef.current) return;
     
     try {
@@ -937,20 +835,38 @@ const VideoPlayerModal: React.FC<{
     } catch (error) {
       console.log('Fullscreen not supported');
     }
-  };
+  }, []);
 
-  // Handle escape key
+  // Keyboard shortcuts for player control
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
-      } else if (e.key === 'f' || e.key === 'F') {
+        return;
+      }
+
+      if (e.key === 'f' || e.key === 'F') {
+        e.preventDefault();
         toggleFullscreen();
+        return;
+      }
+
+      if (e.key === 'h' || e.key === 'H') {
+        e.preventDefault();
+        setShowControls((prev) => !prev);
+        return;
+      }
+
+      if (hasMultiplePlayers && (e.key === '1' || e.key === '2')) {
+        e.preventDefault();
+        setActivePlayer(e.key === '1' ? 1 : 2);
+        resetControlsTimeout();
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [hasMultiplePlayers, onClose, resetControlsTimeout, toggleFullscreen]);
 
   // Open video in new tab
   const openVideoDirect = () => {
@@ -1058,6 +974,14 @@ const VideoPlayerModal: React.FC<{
       className="fixed inset-0 z-50 bg-black"
       ref={containerRef}
       onMouseMove={resetControlsTimeout}
+      onTouchStart={resetControlsTimeout}
+      onClick={() => {
+        if (isFullscreen) {
+          setShowControls((prev) => !prev);
+        } else {
+          resetControlsTimeout();
+        }
+      }}
     >
       {/* Video iframe */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -1238,22 +1162,6 @@ const VideoPlayerModal: React.FC<{
         )}
       </AnimatePresence>
 
-      {/* Show controls hint when hidden */}
-      {!showControls && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        >
-          <motion.div
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="text-white/30 text-sm"
-          >
-            Двигайте мышкой для управления
-          </motion.div>
-        </motion.div>
-      )}
     </motion.div>
   );
 };
@@ -1290,174 +1198,125 @@ const HomePage: React.FC<{
   navigate: (page: string, id?: string) => void;
   onPlayMovie: (movie: Movie) => void;
   onDeleteMovie?: (movie: Movie) => void;
-}> = ({ trendingMovies, topRatedMovies, loading, navigate, onPlayMovie, onDeleteMovie }) => {
-  const heroMovie = trendingMovies[0];
+}> = ({ trendingMovies, topRatedMovies, loading, navigate, onPlayMovie }) => {
+  const heroMovie = trendingMovies[0] || topRatedMovies[0];
+
+  const trendingShows = useMemo(() => [...trendingMovies].reverse().slice(0, 10), [trendingMovies]);
+  const trendingAnime = useMemo(() => [...topRatedMovies].slice(0, 10), [topRatedMovies]);
+  const topRatedShows = useMemo(() => [...topRatedMovies].reverse().slice(0, 10), [topRatedMovies]);
+  const topRatedAnime = useMemo(() => [...trendingMovies].slice(0, 10), [trendingMovies]);
+
+  const renderRowSection = (title: string, items: Movie[]) => (
+    <section className="mb-8">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">{title}</h3>
+        <div className="hidden md:flex gap-2">
+          <button className="w-8 h-8 rounded-lg bg-white/10 text-white/80">←</button>
+          <button className="w-8 h-8 rounded-lg bg-white/10 text-white/80">→</button>
+        </div>
+      </div>
+
+      <div className="flex gap-3 overflow-x-auto pb-2 hide-scrollbar">
+        {(loading ? Array.from({ length: 10 }) : items).map((item, idx) => {
+          if (!item || typeof item === 'number') {
+            return <div key={`skeleton-${idx}`} className="w-[140px] h-[215px] rounded-xl bg-white/10 shrink-0 animate-pulse" />;
+          }
+
+          return (
+            <motion.button
+              key={item.id}
+              whileHover={{ y: -4 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('movie', item.id.toString())}
+              className="w-[140px] shrink-0 text-left"
+            >
+              <div className="relative h-[190px] rounded-xl overflow-hidden bg-white/10 border border-white/10">
+                <img
+                  src={`${IMAGE_BASE}/w342${item.poster_path}`}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+                <span className="absolute left-1.5 top-1.5 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-black/85 text-green-300 border border-white/10">
+                  ★ {item.vote_average.toFixed(1)}
+                </span>
+              </div>
+              <p className="mt-1.5 text-sm font-semibold text-white truncate">{item.title}</p>
+              <p className="text-xs text-white/45">{item.release_date?.split('-')[0] || '2026'} • Movie</p>
+            </motion.button>
+          );
+        })}
+      </div>
+    </section>
+  );
 
   return (
-    <div className="min-h-screen">
-      {heroMovie && (
-        <div className="relative h-[70vh] md:h-[80vh] overflow-hidden">
-          <div className="absolute inset-0">
-            <img
-              src={`${IMAGE_BASE}/w1280${heroMovie.backdrop_path}`}
-              alt={heroMovie.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#07080F] via-[#07080F]/60 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#07080F] via-transparent to-transparent" />
-          </div>
-
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center w-full pt-20">
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease }}
-                className="space-y-6"
-              >
-                <div className="liquid-glass-violet inline-flex px-4 py-1.5 rounded-full">
-                  <span className="text-xs font-medium uppercase tracking-[0.2em] text-violet-300">
-                    Сейчас в тренде
-                  </span>
-                </div>
-
-                <h1 className="font-heading italic text-4xl md:text-5xl lg:text-6xl text-white tracking-tight text-balance leading-tight">
-                  {heroMovie.title}
-                </h1>
-
-                <p className="text-white/60 leading-relaxed max-w-xl text-sm md:text-base line-clamp-3">
-                  {heroMovie.overview}
-                </p>
-
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className={`flex items-center gap-1.5 liquid-glass px-3 py-1.5 rounded-lg ${getRatingColor(heroMovie.vote_average)}`}>
-                    <Star className="w-4 h-4 fill-current" />
-                    <span className="font-medium">{heroMovie.vote_average.toFixed(1)}</span>
-                  </span>
-                  {heroMovie.genre_ids?.slice(0, 3).map(genreId => (
-                    <span key={genreId} className="liquid-glass px-3 py-1.5 rounded-lg text-xs text-white/70">
-                      {genreMap[genreId] || 'Жанр'}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap gap-4 pt-2">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate('movie', heroMovie.id.toString())}
-                    className="glass-btn-primary px-8 py-3 rounded-full flex items-center gap-2 font-medium text-white transition-all active:scale-95"
-                  >
-                    <Play className="w-5 h-5 fill-current" />
-                    Смотреть сейчас
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => navigate('movie', heroMovie.id.toString())}
-                    className="glass-btn px-8 py-3 rounded-full flex items-center gap-2 font-medium text-white/80 transition-all"
-                  >
-                    <Ticket className="w-5 h-5" />
-                    Купить билет
-                  </motion.button>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease, delay: 0.2 }}
-                className="hidden lg:flex justify-end"
-              >
-                <div className="relative animate-float">
-                  <div className="liquid-glass-strong rounded-2xl p-2 max-w-[280px]">
-                    <img
-                      src={`${IMAGE_BASE}/w500${heroMovie.poster_path}`}
-                      alt={heroMovie.title}
-                      className="w-full rounded-xl"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150"><rect fill="%231a0533" width="100" height="150"/><text x="50" y="75" text-anchor="middle" fill="%23A78BFA" font-size="12">Постер</text></svg>';
-                      }}
-                    />
-                  </div>
-                </div>
-              </motion.div>
+    <div className="min-h-screen bg-[#08090c] pt-20 md:pt-4 pb-10">
+      <div className="max-w-[1280px] mx-auto px-3 md:px-6">
+        {heroMovie && (
+          <section className="mb-8 rounded-2xl border border-white/10 overflow-hidden relative bg-black min-h-[280px]">
+            {heroMovie.backdrop_path && (
+              <img
+                src={`${IMAGE_BASE}/w1280${heroMovie.backdrop_path}`}
+                alt={heroMovie.title}
+                className="absolute inset-0 w-full h-full object-cover opacity-35"
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-black/30" />
+            <div className="relative z-10 p-6 md:p-8 max-w-3xl">
+              <p className="text-xs tracking-[0.25em] text-white/45 uppercase mb-4">Featured</p>
+              <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-none">{heroMovie.title}</h1>
+              <p className="text-white/70 text-sm md:text-base line-clamp-2 mb-5">{heroMovie.overview}</p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => onPlayMovie(heroMovie)}
+                  className="px-6 py-3 rounded-xl bg-white text-black font-semibold flex items-center gap-2"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  Play
+                </button>
+                <button
+                  onClick={() => navigate('movie', heroMovie.id.toString())}
+                  className="w-11 h-11 rounded-xl bg-white/15 text-white text-2xl"
+                >
+                  +
+                </button>
+              </div>
             </div>
+          </section>
+        )}
+
+        {renderRowSection("Trending Movies", trendingMovies.slice(0, 12))}
+        {renderRowSection("Trending Shows", trendingShows)}
+        {renderRowSection("Trending Anime", trendingAnime)}
+        {renderRowSection("Top Rated Movies", topRatedMovies.slice(0, 12))}
+        {renderRowSection("Top Rated Shows", topRatedShows)}
+        {renderRowSection("Top Rated Anime", topRatedAnime)}
+
+        <section className="mb-8">
+          <h3 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-3">Studios</h3>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="h-20 rounded-xl bg-white/80" />
+            ))}
           </div>
-        </div>
-      )}
+        </section>
 
-      <section className="relative py-12 md:py-16">
-        <div className="absolute left-0 top-0 w-96 h-32 bg-violet-600/10 blur-[100px] rounded-full pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeUp>
-            <h2 className="font-heading text-2xl md:text-3xl text-white mb-8 flex items-center gap-3">
-              🔥 Топ 20 Недели
-            </h2>
-          </FadeUp>
-
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={{ animate: { transition: { staggerChildren: 0.08 } } }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
-          >
-            {loading
-              ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-              : trendingMovies.slice(0, 20).map((movie, index) => (
-                  <FadeUp key={movie.id} delay={index * 0.05}>
-                    <MovieCard
-                      movie={movie}
-                      rank={index + 1}
-                      onClick={() => navigate('movie', movie.id.toString())}
-                      onPlayFull={() => onPlayMovie(movie)}
-                      onDelete={onDeleteMovie}
-                      showDelete={true}
-                    />
-                  </FadeUp>
-                ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="relative py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeUp>
-            <h2 className="font-heading text-2xl md:text-3xl text-white mb-8 flex items-center gap-3">
-              ⭐ Лучшие Фильмы
-            </h2>
-          </FadeUp>
-
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={{ animate: { transition: { staggerChildren: 0.08 } } }}
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
-          >
-            {loading
-              ? Array.from({ length: 10 }).map((_, i) => <SkeletonCard key={i} />)
-              : topRatedMovies.slice(0, 10).map((movie, index) => (
-                  <FadeUp key={movie.id} delay={index * 0.05}>
-                    <MovieCard
-                      movie={movie}
-                      onClick={() => navigate('movie', movie.id.toString())}
-                      onPlayFull={() => onPlayMovie(movie)}
-                      onDelete={onDeleteMovie}
-                      showDelete={true}
-                    />
-                  </FadeUp>
-                ))}
-          </motion.div>
-        </div>
-      </section>
+        <section>
+          <div className="flex items-baseline gap-3 mb-3">
+            <h3 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Collections</h3>
+            <span className="text-white/50 text-sm">Explore All</span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+            {['Star Wars Collection', 'Harry Potter Collection', 'The Lord of the Rings Collection', 'The Terminator Collection'].map((name) => (
+              <div key={name} className="rounded-xl border border-white/10 bg-black p-4 h-28 flex flex-col justify-end">
+                <p className="text-white font-semibold">{name}</p>
+                <p className="text-xs text-white/50">{Math.floor(Math.random() * 8) + 3} movies</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-white/35 mt-4">This site does not store any files on the server, we only linked to the media which is hosted on 3rd party services.</p>
+        </section>
+      </div>
     </div>
   );
 };
@@ -1472,76 +1331,13 @@ const MovieDetailPage: React.FC<{
   movieId: string;
   onPlayMovie?: (movie: Movie) => void;
 }> = ({ movie, loading, navigate, movieId, onPlayMovie }) => {
-  const { showToast } = useToast();
-  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
-  const [selectedDate, setSelectedDate] = useState<number>(0);
-  const [selectedTime, setSelectedTime] = useState<number>(0);
-  const [showTicketModal, setShowTicketModal] = useState(false);
   const [showTrailerModal, setShowTrailerModal] = useState(false);
+  const [showFilmIntro, setShowFilmIntro] = useState(true);
 
-  // Generate random taken seats using useMemo
-  const takenSeats = useMemo(() => {
-    const taken = new Set<string>();
-    const rows = 'ABCDEFGH';
-    for (let r = 0; r < 8; r++) {
-      for (let s = 1; s <= 10; s++) {
-        if (Math.random() < 0.3) {
-          taken.add(`${rows[r]}${s}`);
-        }
-      }
-    }
-    return taken;
-  }, [movieId]);
-
-  // Generate next 7 days
-  const dates = useMemo(() => {
-    const result = [];
-    const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      result.push({
-        day: days[date.getDay()],
-        date: date.getDate(),
-        full: date
-      });
-    }
-    return result;
+  useEffect(() => {
+    const timer = setTimeout(() => setShowFilmIntro(false), 2200);
+    return () => clearTimeout(timer);
   }, []);
-
-  const timeSlots = ['13:00', '15:30', '19:00', '21:30'];
-
-  const handleSeatClick = (seatId: string) => {
-    if (takenSeats.has(seatId)) return;
-
-    setSelectedSeats(prev => {
-      if (prev.includes(seatId)) {
-        return prev.filter(s => s !== seatId);
-      }
-      if (prev.length >= 2) {
-        showToast('Максимум 2 места', 'info');
-        return prev;
-      }
-      return [...prev, seatId];
-    });
-  };
-
-  const getSeatClass = (seatId: string): string => {
-    if (takenSeats.has(seatId)) return 'seat seat-taken';
-    if (selectedSeats.includes(seatId)) return 'seat seat-selected';
-    return 'seat seat-available';
-  };
-
-  const getPrice = (): number => {
-    let total = 0;
-    selectedSeats.forEach(seat => {
-      const row = seat[0];
-      if (['A', 'B'].includes(row)) total += 4000;
-      else if (['C', 'D', 'E', 'F'].includes(row)) total += 2500;
-      else total += 1500;
-    });
-    return total;
-  };
 
   const trailerKey = movie?.videos?.results?.find(
     v => v.type === 'Trailer' && v.site === 'YouTube'
@@ -1574,6 +1370,49 @@ const MovieDetailPage: React.FC<{
       exit="exit"
       className="min-h-screen"
     >
+      <AnimatePresence>
+        {showFilmIntro && movie && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-40 pointer-events-none"
+          >
+            <div className="absolute inset-0 bg-black" />
+            {movie.backdrop_path && (
+              <motion.img
+                initial={{ scale: 1.08, opacity: 0.35 }}
+                animate={{ scale: 1, opacity: 0.6 }}
+                transition={{ duration: 2, ease: 'easeOut' }}
+                src={`${IMAGE_BASE}/w1280${movie.backdrop_path}`}
+                alt={movie.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#07080F] via-black/60 to-black/20" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+              <motion.h2
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="font-heading text-3xl md:text-6xl text-white"
+              >
+                {movie.title}
+              </motion.h2>
+              {movie.tagline && (
+                <motion.p
+                  initial={{ y: 15, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="mt-4 text-white/80 max-w-2xl"
+                >
+                  {movie.tagline}
+                </motion.p>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="relative h-screen overflow-hidden">
         <div className="absolute inset-0">
           {movie.backdrop_path && (
@@ -1737,9 +1576,8 @@ const MovieDetailPage: React.FC<{
                         <h2 className="font-heading text-xl text-white flex items-center gap-2">
                           🎬 Смотреть Фильм
                         </h2>
-                        
+
                         <div className="space-y-3">
-                          {/* Player 1 */}
                           {movie.player1Url && (
                             <motion.button
                               whileHover={{ scale: 1.02 }}
@@ -1754,8 +1592,7 @@ const MovieDetailPage: React.FC<{
                               )}
                             </motion.button>
                           )}
-                          
-                          {/* Player 2 */}
+
                           {movie.player2Url && (
                             <motion.button
                               whileHover={{ scale: 1.02 }}
@@ -1771,7 +1608,7 @@ const MovieDetailPage: React.FC<{
                             </motion.button>
                           )}
                         </div>
-                        
+
                         <div className="flex items-center justify-center gap-4 text-xs text-white/40">
                           <span className="flex items-center gap-1">
                             <span className="w-2 h-2 bg-green-400 rounded-full" />
@@ -1785,131 +1622,12 @@ const MovieDetailPage: React.FC<{
                       </>
                     ) : (
                       <>
-                        {/* Ticket Booking Section - only show if no video */}
                         <h2 className="font-heading text-xl text-white flex items-center gap-2">
-                          🎟 Забронировать Место
+                          🎬 Смотреть Фильм
                         </h2>
-
-                        <div className="text-center">
-                          <div className="w-3/4 mx-auto h-2 bg-white/15 rounded-full mb-2" style={{ borderRadius: '50%' }} />
-                          <span className="text-xs text-white/40 uppercase tracking-widest">ЭКРАН</span>
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center text-white/70">
+                          Для этого фильма плеер скоро появится. Выберите другой фильм из каталога.
                         </div>
-
-                        <div className="overflow-x-auto hide-scrollbar">
-                          <div className="min-w-[320px] space-y-2">
-                            {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map(row => (
-                              <div key={row} className="flex items-center gap-1">
-                                <span className="w-5 text-xs text-white/40 text-center">{row}</span>
-                                <div className="flex gap-1 flex-1 justify-center">
-                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => {
-                                    const seatId = `${row}${num}`;
-                                    const isVip = ['A', 'B'].includes(row);
-                                    const isEco = ['G', 'H'].includes(row);
-                                    return (
-                                      <motion.button
-                                        key={seatId}
-                                        whileTap={{ scale: 0.9 }}
-                                        onClick={() => handleSeatClick(seatId)}
-                                        className={`${getSeatClass(seatId)} ${
-                                          isVip ? 'w-7 h-7' : isEco ? 'w-6 h-6 text-[10px]' : ''
-                                        }`}
-                                        disabled={takenSeats.has(seatId)}
-                                      />
-                                    );
-                                  })}
-                                </div>
-                                <span className="w-5" />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="flex justify-center gap-4 text-xs text-white/50">
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-white/10" />
-                            Свободно
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-violet-500" />
-                            Выбрано
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-white/5 opacity-40" />
-                            Занято
-                          </div>
-                        </div>
-
-                        <AnimatePresence>
-                          {selectedSeats.length > 0 && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="space-y-4"
-                            >
-                              <div>
-                                <span className="text-xs text-white/40 mb-2 block">Дата</span>
-                                <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
-                                  {dates.map((d, idx) => (
-                                    <motion.button
-                                      key={idx}
-                                      whileTap={{ scale: 0.95 }}
-                                      onClick={() => setSelectedDate(idx)}
-                                      className={`shrink-0 px-4 py-2 rounded-xl flex flex-col items-center min-w-[60px] ${
-                                        selectedDate === idx ? 'liquid-glass-violet' : 'liquid-glass'
-                                      }`}
-                                    >
-                                      <span className="text-xs text-white/50">{d.day}</span>
-                                      <span className="text-lg font-medium text-white">{d.date}</span>
-                                    </motion.button>
-                                  ))}
-                                </div>
-                              </div>
-
-                              <div>
-                                <span className="text-xs text-white/40 mb-2 block">Время</span>
-                                <div className="flex gap-2 flex-wrap">
-                                  {timeSlots.map((time, idx) => (
-                                    <motion.button
-                                      key={time}
-                                      whileTap={{ scale: 0.95 }}
-                                      onClick={() => setSelectedTime(idx)}
-                                      className={`px-4 py-2 rounded-xl ${
-                                        selectedTime === idx ? 'liquid-glass-violet' : 'liquid-glass'
-                                      }`}
-                                    >
-                                      <span className="text-sm text-white">{time}</span>
-                                    </motion.button>
-                                  ))}
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-
-                        <AnimatePresence>
-                          {selectedSeats.length > 0 && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 20 }}
-                              className="space-y-3"
-                            >
-                              <p className="text-sm text-white/60 text-center">
-                                {selectedSeats.length} место(а) · Ряд {selectedSeats.map(s => s[0]).join(', ')} · {timeSlots[selectedTime]}
-                              </p>
-                              <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => setShowTicketModal(true)}
-                                className="w-full liquid-glass-violet rounded-full py-3 text-white font-medium flex items-center justify-center gap-2"
-                              >
-                                <Ticket className="w-5 h-5" />
-                                Забронировать — {getPrice()}₸
-                              </motion.button>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </>
                     )}
                   </div>
@@ -1954,19 +1672,6 @@ const MovieDetailPage: React.FC<{
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {showTicketModal && (
-          <TicketModal
-            movie={movie}
-            selectedSeats={selectedSeats}
-            selectedDate={dates[selectedDate]}
-            selectedTime={timeSlots[selectedTime]}
-            price={getPrice()}
-            onClose={() => setShowTicketModal(false)}
-            navigate={navigate}
-          />
-        )}
-      </AnimatePresence>
     </motion.div>
   );
 };
@@ -1986,7 +1691,7 @@ const TicketModal: React.FC<{
   const { showToast } = useToast();
   const [sessionId] = useState(() => generateSessionId(movie.id));
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     showToast('Генерация билета...', 'info');
     
     try {
@@ -2249,11 +1954,38 @@ const TicketModal: React.FC<{
         currentY += ticketHeight + ticketGap;
       }
       
-      // Trigger download
-      const link = document.createElement('a');
-      link.download = `domakino-ticket-${movie.title.replace(/\s+/g, '-')}.png`;
-      link.href = canvas.toDataURL('image/png', 1.0);
-      link.click();
+      // Trigger download (use blob first for better browser support)
+      const safeMovieTitle = movie.title
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-zа-яё0-9-]/g, '') || `movie-${movie.id}`;
+      const fileName = `domakino-ticket-${safeMovieTitle}.png`;
+
+      const triggerDownload = (href: string) => {
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = href;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      };
+
+      if (canvas.toBlob) {
+        const blob = await new Promise<Blob | null>((resolve) => {
+          canvas.toBlob(resolve, 'image/png');
+        });
+
+        if (!blob) {
+          throw new Error('Failed to generate ticket blob');
+        }
+
+        const blobUrl = URL.createObjectURL(blob);
+        triggerDownload(blobUrl);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      } else {
+        triggerDownload(canvas.toDataURL('image/png'));
+      }
       
       showToast('Билеты скачаны!', 'success');
     } catch (error) {
@@ -4484,7 +4216,7 @@ const DomokinoApp: React.FC = () => {
     <div className="min-h-screen bg-[#07080F] flex flex-col">
       <Navbar currentPage={currentPage} navigate={navigate} />
 
-      <main className="flex-1">
+      <main className="flex-1 md:pl-40">
         <AnimatePresence mode="wait">
           {currentPage === 'home' && (
             <HomePage
@@ -4495,7 +4227,6 @@ const DomokinoApp: React.FC = () => {
               navigate={navigate}
               onPlayMovie={handlePlayMovie}
               onDeleteMovie={handleDeleteMovie}
-              adminMovieIds={adminMovieIds}
             />
           )}
 
