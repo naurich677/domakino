@@ -451,6 +451,7 @@ const Navbar: React.FC<{ currentPage: string; navigate: (page: string, id?: stri
   const miscItems = [
     { label: 'Watchlist', page: 'home', icon: Heart },
     { label: 'History', page: 'home', icon: Clock3 },
+    { label: 'Admin', page: 'admin', icon: Settings },
   ];
 
   const renderNavItems = (items: { label: string; page: string; icon: any }[]) => (
