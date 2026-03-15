@@ -1986,7 +1986,7 @@ const TicketModal: React.FC<{
   const { showToast } = useToast();
   const [sessionId] = useState(() => generateSessionId(movie.id));
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     showToast('Генерация билета...', 'info');
     
     try {
@@ -2249,11 +2249,38 @@ const TicketModal: React.FC<{
         currentY += ticketHeight + ticketGap;
       }
       
-      // Trigger download
-      const link = document.createElement('a');
-      link.download = `domakino-ticket-${movie.title.replace(/\s+/g, '-')}.png`;
-      link.href = canvas.toDataURL('image/png', 1.0);
-      link.click();
+      // Trigger download (use blob first for better browser support)
+      const safeMovieTitle = movie.title
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-zа-яё0-9-]/g, '') || `movie-${movie.id}`;
+      const fileName = `domakino-ticket-${safeMovieTitle}.png`;
+
+      const triggerDownload = (href: string) => {
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = href;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      };
+
+      if (canvas.toBlob) {
+        const blob = await new Promise<Blob | null>((resolve) => {
+          canvas.toBlob(resolve, 'image/png');
+        });
+
+        if (!blob) {
+          throw new Error('Failed to generate ticket blob');
+        }
+
+        const blobUrl = URL.createObjectURL(blob);
+        triggerDownload(blobUrl);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      } else {
+        triggerDownload(canvas.toDataURL('image/png'));
+      }
       
       showToast('Билеты скачаны!', 'success');
     } catch (error) {
