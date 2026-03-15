@@ -1482,76 +1482,13 @@ const MovieDetailPage: React.FC<{
   movieId: string;
   onPlayMovie?: (movie: Movie) => void;
 }> = ({ movie, loading, navigate, movieId, onPlayMovie }) => {
-  const { showToast } = useToast();
-  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
-  const [selectedDate, setSelectedDate] = useState<number>(0);
-  const [selectedTime, setSelectedTime] = useState<number>(0);
-  const [showTicketModal, setShowTicketModal] = useState(false);
   const [showTrailerModal, setShowTrailerModal] = useState(false);
+  const [showFilmIntro, setShowFilmIntro] = useState(true);
 
-  // Generate random taken seats using useMemo
-  const takenSeats = useMemo(() => {
-    const taken = new Set<string>();
-    const rows = 'ABCDEFGH';
-    for (let r = 0; r < 8; r++) {
-      for (let s = 1; s <= 10; s++) {
-        if (Math.random() < 0.3) {
-          taken.add(`${rows[r]}${s}`);
-        }
-      }
-    }
-    return taken;
-  }, [movieId]);
-
-  // Generate next 7 days
-  const dates = useMemo(() => {
-    const result = [];
-    const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      result.push({
-        day: days[date.getDay()],
-        date: date.getDate(),
-        full: date
-      });
-    }
-    return result;
+  useEffect(() => {
+    const timer = setTimeout(() => setShowFilmIntro(false), 2200);
+    return () => clearTimeout(timer);
   }, []);
-
-  const timeSlots = ['13:00', '15:30', '19:00', '21:30'];
-
-  const handleSeatClick = (seatId: string) => {
-    if (takenSeats.has(seatId)) return;
-
-    setSelectedSeats(prev => {
-      if (prev.includes(seatId)) {
-        return prev.filter(s => s !== seatId);
-      }
-      if (prev.length >= 2) {
-        showToast('Максимум 2 места', 'info');
-        return prev;
-      }
-      return [...prev, seatId];
-    });
-  };
-
-  const getSeatClass = (seatId: string): string => {
-    if (takenSeats.has(seatId)) return 'seat seat-taken';
-    if (selectedSeats.includes(seatId)) return 'seat seat-selected';
-    return 'seat seat-available';
-  };
-
-  const getPrice = (): number => {
-    let total = 0;
-    selectedSeats.forEach(seat => {
-      const row = seat[0];
-      if (['A', 'B'].includes(row)) total += 4000;
-      else if (['C', 'D', 'E', 'F'].includes(row)) total += 2500;
-      else total += 1500;
-    });
-    return total;
-  };
 
   const trailerKey = movie?.videos?.results?.find(
     v => v.type === 'Trailer' && v.site === 'YouTube'
@@ -1584,6 +1521,49 @@ const MovieDetailPage: React.FC<{
       exit="exit"
       className="min-h-screen"
     >
+      <AnimatePresence>
+        {showFilmIntro && movie && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="fixed inset-0 z-40 pointer-events-none"
+          >
+            <div className="absolute inset-0 bg-black" />
+            {movie.backdrop_path && (
+              <motion.img
+                initial={{ scale: 1.08, opacity: 0.35 }}
+                animate={{ scale: 1, opacity: 0.6 }}
+                transition={{ duration: 2, ease: 'easeOut' }}
+                src={`${IMAGE_BASE}/w1280${movie.backdrop_path}`}
+                alt={movie.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#07080F] via-black/60 to-black/20" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+              <motion.h2
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="font-heading text-3xl md:text-6xl text-white"
+              >
+                {movie.title}
+              </motion.h2>
+              {movie.tagline && (
+                <motion.p
+                  initial={{ y: 15, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="mt-4 text-white/80 max-w-2xl"
+                >
+                  {movie.tagline}
+                </motion.p>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="relative h-screen overflow-hidden">
         <div className="absolute inset-0">
           {movie.backdrop_path && (
@@ -1747,9 +1727,8 @@ const MovieDetailPage: React.FC<{
                         <h2 className="font-heading text-xl text-white flex items-center gap-2">
                           🎬 Смотреть Фильм
                         </h2>
-                        
+
                         <div className="space-y-3">
-                          {/* Player 1 */}
                           {movie.player1Url && (
                             <motion.button
                               whileHover={{ scale: 1.02 }}
@@ -1764,8 +1743,7 @@ const MovieDetailPage: React.FC<{
                               )}
                             </motion.button>
                           )}
-                          
-                          {/* Player 2 */}
+
                           {movie.player2Url && (
                             <motion.button
                               whileHover={{ scale: 1.02 }}
@@ -1781,7 +1759,7 @@ const MovieDetailPage: React.FC<{
                             </motion.button>
                           )}
                         </div>
-                        
+
                         <div className="flex items-center justify-center gap-4 text-xs text-white/40">
                           <span className="flex items-center gap-1">
                             <span className="w-2 h-2 bg-green-400 rounded-full" />
@@ -1795,131 +1773,12 @@ const MovieDetailPage: React.FC<{
                       </>
                     ) : (
                       <>
-                        {/* Ticket Booking Section - only show if no video */}
                         <h2 className="font-heading text-xl text-white flex items-center gap-2">
-                          🎟 Забронировать Место
+                          🎬 Смотреть Фильм
                         </h2>
-
-                        <div className="text-center">
-                          <div className="w-3/4 mx-auto h-2 bg-white/15 rounded-full mb-2" style={{ borderRadius: '50%' }} />
-                          <span className="text-xs text-white/40 uppercase tracking-widest">ЭКРАН</span>
+                        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-center text-white/70">
+                          Для этого фильма плеер скоро появится. Выберите другой фильм из каталога.
                         </div>
-
-                        <div className="overflow-x-auto hide-scrollbar">
-                          <div className="min-w-[320px] space-y-2">
-                            {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].map(row => (
-                              <div key={row} className="flex items-center gap-1">
-                                <span className="w-5 text-xs text-white/40 text-center">{row}</span>
-                                <div className="flex gap-1 flex-1 justify-center">
-                                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => {
-                                    const seatId = `${row}${num}`;
-                                    const isVip = ['A', 'B'].includes(row);
-                                    const isEco = ['G', 'H'].includes(row);
-                                    return (
-                                      <motion.button
-                                        key={seatId}
-                                        whileTap={{ scale: 0.9 }}
-                                        onClick={() => handleSeatClick(seatId)}
-                                        className={`${getSeatClass(seatId)} ${
-                                          isVip ? 'w-7 h-7' : isEco ? 'w-6 h-6 text-[10px]' : ''
-                                        }`}
-                                        disabled={takenSeats.has(seatId)}
-                                      />
-                                    );
-                                  })}
-                                </div>
-                                <span className="w-5" />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="flex justify-center gap-4 text-xs text-white/50">
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-white/10" />
-                            Свободно
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-violet-500" />
-                            Выбрано
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 rounded bg-white/5 opacity-40" />
-                            Занято
-                          </div>
-                        </div>
-
-                        <AnimatePresence>
-                          {selectedSeats.length > 0 && (
-                            <motion.div
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: 'auto' }}
-                              exit={{ opacity: 0, height: 0 }}
-                              className="space-y-4"
-                            >
-                              <div>
-                                <span className="text-xs text-white/40 mb-2 block">Дата</span>
-                                <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-2">
-                                  {dates.map((d, idx) => (
-                                    <motion.button
-                                      key={idx}
-                                      whileTap={{ scale: 0.95 }}
-                                      onClick={() => setSelectedDate(idx)}
-                                      className={`shrink-0 px-4 py-2 rounded-xl flex flex-col items-center min-w-[60px] ${
-                                        selectedDate === idx ? 'liquid-glass-violet' : 'liquid-glass'
-                                      }`}
-                                    >
-                                      <span className="text-xs text-white/50">{d.day}</span>
-                                      <span className="text-lg font-medium text-white">{d.date}</span>
-                                    </motion.button>
-                                  ))}
-                                </div>
-                              </div>
-
-                              <div>
-                                <span className="text-xs text-white/40 mb-2 block">Время</span>
-                                <div className="flex gap-2 flex-wrap">
-                                  {timeSlots.map((time, idx) => (
-                                    <motion.button
-                                      key={time}
-                                      whileTap={{ scale: 0.95 }}
-                                      onClick={() => setSelectedTime(idx)}
-                                      className={`px-4 py-2 rounded-xl ${
-                                        selectedTime === idx ? 'liquid-glass-violet' : 'liquid-glass'
-                                      }`}
-                                    >
-                                      <span className="text-sm text-white">{time}</span>
-                                    </motion.button>
-                                  ))}
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-
-                        <AnimatePresence>
-                          {selectedSeats.length > 0 && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 20 }}
-                              className="space-y-3"
-                            >
-                              <p className="text-sm text-white/60 text-center">
-                                {selectedSeats.length} место(а) · Ряд {selectedSeats.map(s => s[0]).join(', ')} · {timeSlots[selectedTime]}
-                              </p>
-                              <motion.button
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={() => setShowTicketModal(true)}
-                                className="w-full liquid-glass-violet rounded-full py-3 text-white font-medium flex items-center justify-center gap-2"
-                              >
-                                <Ticket className="w-5 h-5" />
-                                Забронировать — {getPrice()}₸
-                              </motion.button>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </>
                     )}
                   </div>
@@ -1964,19 +1823,6 @@ const MovieDetailPage: React.FC<{
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {showTicketModal && (
-          <TicketModal
-            movie={movie}
-            selectedSeats={selectedSeats}
-            selectedDate={dates[selectedDate]}
-            selectedTime={timeSlots[selectedTime]}
-            price={getPrice()}
-            onClose={() => setShowTicketModal(false)}
-            navigate={navigate}
-          />
-        )}
-      </AnimatePresence>
     </motion.div>
   );
 };
